@@ -1098,7 +1098,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!1 &1371207697
 GameObject:
@@ -1423,6 +1423,7 @@ Transform:
   m_Children:
   - {fileID: 316251535}
   - {fileID: 998343988}
+  - {fileID: 1955790851}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1955790845
@@ -1554,8 +1555,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17fcf79734d8be64cb8abd983653ec63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _alarm: {fileID: 1955790846}
-  _alarmClip: {fileID: 8300000, guid: 8d99488ae8c269d459fac0e3df30de5e, type: 3}
+  _source: {fileID: 1955790846}
+  "_\u0441lip": {fileID: 8300000, guid: 8d99488ae8c269d459fac0e3df30de5e, type: 3}
+  _forbiddenZone: {fileID: 998343990}
+  _alarmStepDelay: 0.5
 --- !u!65 &1955790848
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1635,12 +1638,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1955790845}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19.045868, y: 3.15, z: 15.67}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.4677391, y: 11.9282875, z: 4.039899}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1847789130}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -1653,4 +1656,3 @@ SceneRoots:
   - {fileID: 1847789130}
   - {fileID: 1091749637}
   - {fileID: 1750195902}
-  - {fileID: 1955790851}

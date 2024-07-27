@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
@@ -6,18 +7,14 @@ public class ForbiddenZone : MonoBehaviour
 {
     [SerializeField] private Alarm _alarm;
 
-    private bool _isRogueInZone;
+    public event Action RogueEnteredZone;
+    public event Action RogueLeftZone;
 
-    private void Update()
-    {
-        _alarm.UpdateBurglaryStatus(_isRogueInZone);
-    }
-
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out RogueMover rogue))
         {
-            _isRogueInZone = true;
+            RogueEnteredZone?.Invoke();
         }
     }
 
@@ -25,7 +22,7 @@ public class ForbiddenZone : MonoBehaviour
     {
         if (other.TryGetComponent(out RogueMover rogue))
         {
-            _isRogueInZone = false;
+            RogueLeftZone?.Invoke();
         }
     }
 }

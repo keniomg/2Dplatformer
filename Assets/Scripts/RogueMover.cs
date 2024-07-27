@@ -18,7 +18,7 @@ public class RogueMover : MonoBehaviour
 
             for (int i = 0; i < _waypointsSet.childCount; i++)
             {
-                _waypoints[i] = _waypointsSet.GetChild(i).GetComponent<Transform>();
+                _waypoints[i] = _waypointsSet.GetChild(i);
             }
         }
     }
