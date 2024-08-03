@@ -1,38 +1,39 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(CircleCollider2D))]
 
 public class Diamond : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
 
-    private bool _isPickedUp;
+    private Vector2 _originalPosition;
 
-    public event Action PickedUp;
+    public event Action<Diamond> PickedUp;
 
     private void Update()
     {
-        ManageAnimator();
+        RunLevitationAnimation();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out PlayerMover playerMover))
         {
-            PickedUp?.Invoke();
-            _isPickedUp = true;
+            _animator.SetBool("isPickedUp", true);
+            PickedUp?.Invoke(this);
         }
     }
 
-    public void ResetPickedUpStatus()
+    public void SetPosition(Vector2 position)
     {
-        _isPickedUp = false;
+        _originalPosition = position;
     }
 
-    public float GetAnimationDuration(string clipName)
+    public float GetDisappearAnimationDuration()
     {
         AnimationClip[] clips = _animator.runtimeAnimatorController.animationClips;
+        string clipName = "Disappear";
 
         foreach (AnimationClip clip in clips)
         {
@@ -45,15 +46,10 @@ public class Diamond : MonoBehaviour
         return 0f;
     }
 
-    private void ManageAnimator()
+    private void RunLevitationAnimation()
     {
-        if (_isPickedUp)
-        {
-            _animator.SetTrigger("isPickedUp");
-        }
-        else
-        {
-            _animator.ResetTrigger("isPickedUp");
-        }
+        float levitationHeight = 0.2f;
+        Vector2 animationOffset = new(0,Mathf.Sin(Time.time) * levitationHeight);
+        transform.position = _originalPosition + animationOffset;
     }
 }

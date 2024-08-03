@@ -2,6 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CapsuleCollider2D))]
+[RequireComponent(typeof(Animator))]
 
 public class PlayerMover : MonoBehaviour
 {
@@ -35,8 +36,16 @@ public class PlayerMover : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         Vector2 horizontalMovement = new(horizontal * _speed, _rigidbody.velocity.y);
         _rigidbody.velocity = horizontalMovement;
-
         ChangeAnimationDirection(horizontal);
+
+        if (horizontal != 0)
+        {
+            _animator.SetBool("isRun", true);
+        }
+        else
+        {
+            _animator.SetBool("isRun", false);
+        }
     }
 
     private void ChangeAnimationDirection(float getAxisInputValue)
