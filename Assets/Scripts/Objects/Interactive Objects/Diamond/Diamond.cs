@@ -2,14 +2,19 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(Animator))]
 
 public class Diamond : MonoBehaviour
 {
-    [SerializeField] private Animator _animator;
-
+    private Animator _animator;
     private Vector2 _originalPosition;
 
     public event Action<Diamond> PickedUp;
+
+    private void Start()
+    {
+        _animator = GetComponent<Animator>();
+    }
 
     private void Update()
     {
@@ -20,7 +25,7 @@ public class Diamond : MonoBehaviour
     {
         if (collision.TryGetComponent(out PlayerMover playerMover))
         {
-            _animator.SetBool("isPickedUp", true);
+            _animator.SetBool(DiamondAnimatorData.Parameters.IsPickedUp, true);
             PickedUp?.Invoke(this);
         }
     }
@@ -49,7 +54,7 @@ public class Diamond : MonoBehaviour
     private void RunLevitationAnimation()
     {
         float levitationHeight = 0.2f;
-        Vector2 animationOffset = new(0,Mathf.Sin(Time.time) * levitationHeight);
+        Vector2 animationOffset = new(0, Mathf.Sin(Time.time) * levitationHeight);
         transform.position = _originalPosition + animationOffset;
     }
 }

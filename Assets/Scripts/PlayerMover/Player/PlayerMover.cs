@@ -10,8 +10,11 @@ public class PlayerMover : MonoBehaviour
     [SerializeField] private float _jumpForce;
     [SerializeField] private Transform _groundCheckPoint;
     [SerializeField] private LayerMask _ground;
-    [SerializeField] private Animator _animator;
 
+    private bool _isFall;
+    private bool _isJump;
+    private bool _isRun;
+    private Animator _animator;
     private Rigidbody2D _rigidbody;
 
     private void Start()
@@ -24,9 +27,17 @@ public class PlayerMover : MonoBehaviour
     {
         Move();
     }
+    
+    private void UpdateAnimatorParameters()
+    {
+        _animator.SetBool(PlayerAnimatorData.Parameters.IsFall, _isFall);
+        _animator.SetBool(PlayerAnimatorData.Parameters.IsJump, _isJump);
+        _animator.SetBool(PlayerAnimatorData.Parameters.IsRun, _isRun);
+    }
 
     private void Move()
     {
+        UpdateAnimatorParameters();
         Run();
         Jump();
     }
@@ -37,28 +48,32 @@ public class PlayerMover : MonoBehaviour
         Vector2 horizontalMovement = new(horizontal * _speed, _rigidbody.velocity.y);
         _rigidbody.velocity = horizontalMovement;
         ChangeAnimationDirection(horizontal);
+        ManageRunStatus(horizontal);
+    }
 
-        if (horizontal != 0)
+    private void ManageRunStatus(float axisValue)
+    {
+        if (axisValue != 0)
         {
-            _animator.SetBool("isRun", true);
+            _isRun = true;
         }
         else
         {
-            _animator.SetBool("isRun", false);
+            _isRun = false;
         }
     }
 
-    private void ChangeAnimationDirection(float getAxisInputValue)
+    private void ChangeAnimationDirection(float axisValue)
     {
         Vector2 originalScale = transform.localScale;
         Vector2 rightSideDirection = new(Mathf.Abs(originalScale.x), originalScale.y);
         Vector2 leftSideDirection = new(-Mathf.Abs(originalScale.x), originalScale.y);
 
-        if (getAxisInputValue > 0)
+        if (axisValue > 0)
         {
             transform.localScale = rightSideDirection;
         }
-        else if (getAxisInputValue < 0)
+        else if (axisValue < 0)
         {
             transform.localScale = leftSideDirection;
         }
@@ -67,7 +82,8 @@ public class PlayerMover : MonoBehaviour
     private void Jump()
     {
         KeyCode jumpKey = KeyCode.Space;
-        CheckGrounded(out bool isGrounded);
+        bool isGrounded = GetGroundedStatus();
+        ManageFallAndJumpStatus(isGrounded);
 
         if (Input.GetKeyDown(jumpKey) && isGrounded)
         {
@@ -75,29 +91,32 @@ public class PlayerMover : MonoBehaviour
         }
     }
 
-    private void CheckGrounded(out bool isGrounded)
+    private bool GetGroundedStatus()
     {
         float checkRadius = 0.1f;
+        bool isGrounded = Physics2D.OverlapCircle(_groundCheckPoint.position, checkRadius, _ground);
+        return isGrounded;
+    }
 
-        isGrounded = Physics2D.OverlapCircle(_groundCheckPoint.position, checkRadius, _ground);
-
+    private void ManageFallAndJumpStatus(bool isGrounded)
+    {
         if (isGrounded == false)
         {
             if (_rigidbody.velocity.y > 0)
             {
-                _animator.SetBool("isJump", true);
-                _animator.SetBool("isFall", false);
+                _isJump = true;
+                _isFall = false;
             }
             else if (_rigidbody.velocity.y < 0)
             {
-                _animator.SetBool("isJump", false);
-                _animator.SetBool("isFall", true);
+                _isJump = false;
+                _isFall = true;
             }
         }
         else
         {
-            _animator.SetBool("isJump", false);
-            _animator.SetBool("isFall", false);
+            _isJump = false;
+            _isFall = false;
         }
     }
 }

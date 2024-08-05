@@ -52,7 +52,7 @@ public class DiamondsSpawner : MonoBehaviour
         diamond.SetPosition(spawnPosition);
     }
 
-    private bool CheckOccupiedSpawnPoints()
+    private bool GetSpawnPointsOccupiedStatus()
     {
         float occupiedCheckRadius = _diamond.transform.localScale.x / 2;
 
@@ -77,7 +77,7 @@ public class DiamondsSpawner : MonoBehaviour
 
         while (true)
         {
-            if (CheckOccupiedSpawnPoints() == false)
+            if (GetSpawnPointsOccupiedStatus() == false)
             {
                 _pool.Get();
             }

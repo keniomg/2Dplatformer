@@ -2,21 +2,23 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(CapsuleCollider2D))]
 
 public class BearMover : MonoBehaviour
 {
     [SerializeField] private float _speed;
-    [SerializeField] private Animator _animator;
     [SerializeField] private Transform _groundCheckPoint;
     [SerializeField] private LayerMask _ground;
 
+    private Animator _animator;
     private bool _isWaiting;
     private bool _isMovingRight;
     private WaitForSeconds _waitForSeconds;
 
     private void Start()
     {
+        _animator = GetComponent<Animator>();
         float turnDelay = 1;
         _waitForSeconds = new WaitForSeconds(turnDelay);
         _isMovingRight = true;
@@ -43,7 +45,11 @@ public class BearMover : MonoBehaviour
             }
 
             transform.Translate(direction * _speed * Time.deltaTime);
-            CheckEdge();
+            
+            if (GetEdgeNearStatus() == false)
+            {
+                StartCoroutine(Turn());
+            }
         }
 
         ChangeAnimationDirection();
@@ -64,10 +70,10 @@ public class BearMover : MonoBehaviour
             transform.localScale = leftSideDirection;
         }
                 
-        _animator.SetBool("isWaiting", _isWaiting);
+        _animator.SetBool(BearAnimatorData.Parameters.IsWaiting, _isWaiting);
     }
 
-    private void CheckEdge()
+    private bool GetEdgeNearStatus()
     {
         Vector2 checkRayDirection;
         float checkRayDistance = 0.5f;
@@ -83,11 +89,7 @@ public class BearMover : MonoBehaviour
 
         Vector2 groundCheckPosition = (Vector2)_groundCheckPoint.position + checkRayDirection * checkRayDistance;
         RaycastHit2D groundCheckInfo = Physics2D.Raycast(groundCheckPosition, checkRayDirection, checkRayDistance, _ground);
-
-        if (groundCheckInfo.collider == false)
-        {
-            StartCoroutine(Turn());
-        }
+        return groundCheckInfo.collider;
     }
 
     private IEnumerator Turn()
