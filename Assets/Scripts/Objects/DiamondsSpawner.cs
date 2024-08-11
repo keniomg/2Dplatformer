@@ -49,7 +49,6 @@ public class DiamondsSpawner : MonoBehaviour
     {
         Vector2 spawnPosition = _spawnPoints[_currentNonOccupiedSpawnPoint].transform.position;
         diamond.transform.position = spawnPosition;
-        diamond.SetPosition(spawnPosition);
     }
 
     private bool GetSpawnPointsOccupiedStatus()

@@ -1,19 +1,24 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(PlayerStatusHandler))]
-[RequireComponent(typeof(PlayerMover))]
+[RequireComponent(typeof(Animator), typeof(PlayerStatusHandler), typeof(PlayerMover))]
 
 public class PlayerAnimatorManager : MonoBehaviour
 {
     private Animator _animator;
     private PlayerStatusHandler _playerStatusHandler;
-    private PlayerMover _playerMover;
+    private PlayerInputReader _playerInputReader;
+    private Vector2 _rightSideDirection;
+    private Vector2 _leftSideDirection;
+    private Vector2 _originalScale;
 
     private void Start()
     {
-        _playerMover = GetComponent<PlayerMover>();
+        _originalScale = transform.localScale;
+        _rightSideDirection = new(Mathf.Abs(_originalScale.x), _originalScale.y);
+        _leftSideDirection = new(-Mathf.Abs(_originalScale.x), _originalScale.y);
+
         _playerStatusHandler = GetComponent<PlayerStatusHandler>();
+        _playerInputReader = GetComponent<PlayerInputReader>();
         _animator = GetComponent<Animator>();
     }
 
@@ -25,7 +30,11 @@ public class PlayerAnimatorManager : MonoBehaviour
     private void ManageAnimation()
     {
         UpdateAnimatorParameters();
-        ChangeAnimationDirection();
+
+        if (_playerInputReader.HorizontalAxisValue != 0)
+        {
+            transform.localScale = _playerInputReader.HorizontalAxisValue > 0 ? _rightSideDirection : _leftSideDirection;
+        }
     }
 
     private void UpdateAnimatorParameters()
@@ -33,21 +42,5 @@ public class PlayerAnimatorManager : MonoBehaviour
         _animator.SetBool(PlayerAnimatorData.Parameters.IsFall, _playerStatusHandler.IsFall);
         _animator.SetBool(PlayerAnimatorData.Parameters.IsJump, _playerStatusHandler.IsJump);
         _animator.SetBool(PlayerAnimatorData.Parameters.IsRun, _playerStatusHandler.IsRun);
-    }
-
-    private void ChangeAnimationDirection()
-    {
-        Vector2 originalScale = transform.localScale;
-        Vector2 rightSideDirection = new(Mathf.Abs(originalScale.x), originalScale.y);
-        Vector2 leftSideDirection = new(-Mathf.Abs(originalScale.x), originalScale.y);
-
-        if (_playerMover.HorizontalAxisValue > 0)
-        {
-            transform.localScale = rightSideDirection;
-        }
-        else if (_playerMover.HorizontalAxisValue < 0)
-        {
-            transform.localScale = leftSideDirection;
-        }
     }
 }

@@ -25,15 +25,7 @@ public class BearAnimatorManager : MonoBehaviour
         Vector2 rightSideDirection = new(Mathf.Abs(originalScale.x), originalScale.y);
         Vector2 leftSideDirection = new(-Mathf.Abs(originalScale.x), originalScale.y);
 
-        if (_bearStatusHandler.IsMovingRight)
-        {
-            transform.localScale = rightSideDirection;
-        }
-        else
-        {
-            transform.localScale = leftSideDirection;
-        }
-
+        transform.localScale = _bearStatusHandler.IsMovingRight ? rightSideDirection : leftSideDirection;
         _animator.SetBool(BearAnimatorData.Parameters.IsWaiting, _bearStatusHandler.IsWaiting);
     }
 }

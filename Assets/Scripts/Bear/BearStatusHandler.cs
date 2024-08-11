@@ -31,14 +31,7 @@ public class BearStatusHandler : MonoBehaviour
         Vector2 checkRayDirection;
         float checkRayDistance = 0.5f;
 
-        if (IsMovingRight)
-        {
-            checkRayDirection = Vector2.right;
-        }
-        else
-        {
-            checkRayDirection = Vector2.left;
-        }
+        checkRayDirection = IsMovingRight ? Vector2.right : Vector2.left;
 
         Vector2 groundCheckPosition = (Vector2)_groundCheckPoint.position + checkRayDirection * checkRayDistance;
         RaycastHit2D groundCheckInfo = Physics2D.Raycast(groundCheckPosition, checkRayDirection, checkRayDistance, _ground);

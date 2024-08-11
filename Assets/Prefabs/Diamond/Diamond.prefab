@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca7d52e118671174d9b6b16279d81f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 105639810759708208}
+  _disappearClip: {fileID: 7400000, guid: e4bacc354310dc44a8b2639690396e43, type: 2}
 --- !u!58 &7486394141717039624
 CircleCollider2D:
   m_ObjectHideFlags: 0

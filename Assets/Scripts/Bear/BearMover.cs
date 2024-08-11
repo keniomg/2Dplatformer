@@ -1,9 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(CapsuleCollider2D))]
-[RequireComponent(typeof(BearStatusHandler))]
+[RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D), typeof(BearStatusHandler))]
 [RequireComponent(typeof(BearAnimatorManager))]
 
 public class BearMover : MonoBehaviour
@@ -32,15 +30,7 @@ public class BearMover : MonoBehaviour
 
         if(_bearStatusHandler.IsWaiting == false)
         {
-            if (_bearStatusHandler.IsMovingRight)
-            {
-                direction = Vector2.right;
-            }
-            else
-            {
-                direction = Vector2.left;
-            }
-
+            direction = _bearStatusHandler.IsMovingRight ? Vector2.right : Vector2.left;
             transform.Translate(direction * _speed * Time.deltaTime);
         }
         else
