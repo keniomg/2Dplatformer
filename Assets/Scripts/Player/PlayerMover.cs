@@ -1,18 +1,15 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D), typeof(PlayerStatusHandler))]
-[RequireComponent(typeof(PlayerAnimatorManager), typeof(PlayerInputReader), typeof(GroundDetector))]
+[RequireComponent(typeof(PlayerAnimatorHandler), typeof(PlayerInputReader), typeof(GroundDetector))]
 
-public class PlayerMover : MonoBehaviour
+public class PlayerMover : Mover
 {
-    [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
 
     private GroundDetector _groundDetector;
     private Rigidbody2D _rigidbody;
     private PlayerInputReader _playerInputReader;
-    private float _horizontalAxisValue;
-    private bool _isJumpKeyInputed;
 
     private void Start()
     {
@@ -23,13 +20,18 @@ public class PlayerMover : MonoBehaviour
 
     private void Update()
     {
-        _horizontalAxisValue = _playerInputReader.HorizontalAxisValue;
-        _isJumpKeyInputed = _playerInputReader.IsJumpKeyInputed;
+        ManageDirection();
     }
 
     private void FixedUpdate()
     {
         Move();
+    }
+
+    private void ManageDirection()
+    {
+        if (_rigidbody.velocity.x != 0)
+            Direction = _rigidbody.velocity.x > 0 ? Vector2.right : Vector2.left;
     }
 
     private void Move()
@@ -40,13 +42,13 @@ public class PlayerMover : MonoBehaviour
 
     private void Run()
     {
-        Vector2 horizontalMovement = new(_horizontalAxisValue * _speed, _rigidbody.velocity.y);
+        Vector2 horizontalMovement = new(_playerInputReader.HorizontalAxisValue * _speed, _rigidbody.velocity.y);
         _rigidbody.velocity = horizontalMovement;
     }
 
     private void Jump()
     {
-        if (_isJumpKeyInputed && _groundDetector.IsGrounded)
+        if (_playerInputReader.IsJumpKeyInputed && _groundDetector.IsGrounded)
             _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
     }
 }

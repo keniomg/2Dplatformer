@@ -4,6 +4,7 @@ public class BearAnimatorData : MonoBehaviour
 {
     public static class Parameters
     {
-        public static readonly int IsWaiting = Animator.StringToHash(nameof(IsWaiting));
+        public static readonly int IsRun = Animator.StringToHash(nameof(IsRun));
+        public static readonly int IsAttack = Animator.StringToHash(nameof(IsAttack));
     }
 }

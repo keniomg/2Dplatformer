@@ -1,41 +1,42 @@
 using UnityEngine;
 
-[RequireComponent(typeof(BearMover))]
+[RequireComponent(typeof(BearMover), typeof(HealthHandler), typeof(BearAttackHandler))]
 
-public class BearStatusHandler : MonoBehaviour
+public class BearStatusHandler : StatusHandler
 {
     [SerializeField] private Transform _groundCheckPoint;
     [SerializeField] private LayerMask _ground;
 
-    public bool IsWaiting { get; private set; }
-    public bool IsMovingRight { get; private set; }
-    public bool IsGroundNear {get; private set; }
+    private BearAttackHandler _bearAttackHandler;
+    private BearMover _bearMover;
+
+    public bool IsRun { get; private set; }
+    public bool IsGroundNear => GetGroundNearStatus();
+    public bool IsAttack => _bearAttackHandler.IsAttack;
 
     private void Start()
     {
-        IsGroundNear = true;
+        _bearAttackHandler = GetComponent<BearAttackHandler>();
+        _bearMover = GetComponent<BearMover>();
     }
 
-    private void Update()
+    public void SetRunStatus()
     {
-        ManageEdgeNearStatus();
+        IsRun = true;
     }
 
-    public void ChangeMovingSideStatus()
+    public void ResetRunStatus()
     {
-        IsMovingRight = !IsMovingRight;
+        IsRun = false;
     }
 
-    private void ManageEdgeNearStatus()
+    private bool GetGroundNearStatus()
     {
-        Vector2 checkRayDirection;
         float checkRayDistance = 0.5f;
 
-        checkRayDirection = IsMovingRight ? Vector2.right : Vector2.left;
+        Vector2 groundCheckPosition = (Vector2)_groundCheckPoint.position + _bearMover.Direction * checkRayDistance;
+        RaycastHit2D groundCheckInfo = Physics2D.Raycast(groundCheckPosition, _bearMover.Direction, checkRayDistance, _ground);
 
-        Vector2 groundCheckPosition = (Vector2)_groundCheckPoint.position + checkRayDirection * checkRayDistance;
-        RaycastHit2D groundCheckInfo = Physics2D.Raycast(groundCheckPosition, checkRayDirection, checkRayDistance, _ground);
-        IsGroundNear = groundCheckInfo.collider;
-        IsWaiting = !IsGroundNear;
+        return groundCheckInfo;
     }
 }
