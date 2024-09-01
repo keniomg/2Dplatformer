@@ -1,17 +1,12 @@
-using System;
 using UnityEngine;
 
-[RequireComponent(typeof(CapsuleCollider2D), typeof(PlayerHealthHandler))]
-
-public class PlayerCollisionHandler : MonoBehaviour
+public class PlayerCollider : MonoBehaviour
 {
-    private PlayerHealthHandler _healthHandler;
-
-    public event Action PlayerCollisionCherry;
+    private PlayerHealth _health;
 
     private void Start()
     {
-        _healthHandler = GetComponent<PlayerHealthHandler>();
+        _health = TryGetComponent(out PlayerHealth playerHealth) ? playerHealth : null;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -28,8 +23,7 @@ public class PlayerCollisionHandler : MonoBehaviour
 
     private void CollisionCherry(Cherry cherry)
     {
-        _healthHandler.InitializeCherry(cherry);
-        PlayerCollisionCherry?.Invoke();
+        _health.IncreaseHealth(cherry.HealingValue);
         cherry.SetPickedUpStatus();
     }
 }

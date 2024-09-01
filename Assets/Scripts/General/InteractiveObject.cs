@@ -5,22 +5,22 @@ using UnityEngine;
 
 public class InteractiveObject : MonoBehaviour
 {
-    [SerializeField] protected AnimationClip _disappear;
+    [SerializeField] protected AnimationClip Disappear;
 
-    protected Animator _animator;
+    protected Animator Animator;
 
     public event Action<InteractiveObject> PickedUp;
 
     protected virtual void Start()
     {
-        _animator = GetComponent<Animator>();
+        Animator = GetComponent<Animator>();
     }
 
     public float GetDisappearAnimationDuration()
     {
-        if (_disappear != null)
+        if (Disappear != null)
         {
-            return _disappear.length;
+            return Disappear.length;
         }
 
         return 0f;
@@ -29,6 +29,6 @@ public class InteractiveObject : MonoBehaviour
     public virtual void SetPickedUpStatus()
     {
         PickedUp?.Invoke(this);
-        _animator.SetBool(InteractiveObjectAnimatorData.Parameters.IsPickedUp, true);
+        Animator.SetBool(InteractiveObjectAnimatorData.Parameters.IsPickedUp, true);
     }
 }

@@ -155,4 +155,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81c043810b65c1541a8132fedd8dd388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _disappear: {fileID: 7400000, guid: 5487e9da05bf8e448be532cb437f0d46, type: 2}
+  Disappear: {fileID: 7400000, guid: 5487e9da05bf8e448be532cb437f0d46, type: 2}

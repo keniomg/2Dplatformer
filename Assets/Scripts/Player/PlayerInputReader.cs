@@ -6,7 +6,19 @@ public class PlayerInputReader : MonoBehaviour
     public const KeyCode JumpKey = KeyCode.Space;
     public const KeyCode AttackKey = KeyCode.Mouse0;
 
-    public float HorizontalAxisValue => Input.GetAxis(Horizontal);
-    public bool IsJumpKeyInputed => Input.GetKeyDown(JumpKey);
-    public bool IsAttackKeyInputed => Input.GetKeyDown(AttackKey);
+    public float HorizontalAxisValue { get; private set; }
+    public bool IsJumpKeyInputed {get; private set; }
+    public bool IsAttackKeyInputed { get; private set; }
+
+    private void Update()
+    {
+        HandleInput();
+    }
+
+    private void HandleInput()
+    {
+        HorizontalAxisValue = Input.GetAxis(Horizontal);
+        IsJumpKeyInputed = Input.GetKeyDown(JumpKey);
+        IsAttackKeyInputed = Input.GetKeyDown(AttackKey);
+    }
 }

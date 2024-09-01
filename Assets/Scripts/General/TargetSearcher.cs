@@ -2,47 +2,29 @@ using UnityEngine;
 
 public class TargetSearcher : MonoBehaviour
 {
-    [SerializeField] protected Mover _mover;
-    [SerializeField] protected HealthHandler _ownHealthHandler;
-    [SerializeField] protected float _targetSearchRadius;
-    [SerializeField] protected float _searchAngle;
-    [SerializeField] protected LayerMask _target;
-    [SerializeField] protected LayerMask _ground;
-
-    protected int _collisionDetectionRaysCount;
-    protected float _rayAngleStep;
-    protected float _leftStartAngle;
-    protected float _rightStartAngle;
+    [SerializeField] protected float TargetSearchRadius;
+    [SerializeField] protected LayerMask TargetLayer;
+    [SerializeField] protected LayerMask Ground;
 
     public Vector2 DirectionToTarget { get; private set; }
-    public HealthHandler Target {get; protected set; }
+    public Health Target { get; protected set; }
 
-    protected virtual void Start()
+    protected TargetHealth GetTarget<TargetHealth>() where TargetHealth : Health
     {
-        _leftStartAngle = 157.5f;
-        _rightStartAngle = -22.5f;
-        int raysCountDivider = 10;
-        _collisionDetectionRaysCount = Mathf.CeilToInt(_searchAngle / raysCountDivider);
-        _rayAngleStep = _searchAngle / (_collisionDetectionRaysCount + 1);
-    }
+        Collider2D targetHit = Physics2D.OverlapCircle(transform.position, TargetSearchRadius, TargetLayer);
 
-    protected TargetHealthHandler GetTarget<TargetHealthHandler>() where TargetHealthHandler : HealthHandler
-    {
-        float startAngle = _mover.Direction == Vector2.right ? _rightStartAngle : _leftStartAngle;
-
-        for (int i = 0; i < _collisionDetectionRaysCount; i++)
+        if (targetHit != null)
         {
-            float rayAngle = startAngle + i * _rayAngleStep;
-            Vector2 directionToTarget = AngleToVector(rayAngle);
-            RaycastHit2D groundHit = Physics2D.Raycast(transform.position, directionToTarget, _targetSearchRadius, _ground);
-            RaycastHit2D targetHit = Physics2D.Raycast(transform.position, directionToTarget, _targetSearchRadius, _target);
+            Vector2 directionToTarget = targetHit.transform.position - transform.position;
+            RaycastHit2D groundHit = Physics2D.Raycast(transform.position, directionToTarget.normalized, directionToTarget.magnitude, Ground);
 
-            if (targetHit && !groundHit)
+            if (groundHit.collider == null)
             {
-                if (targetHit.collider.TryGetComponent(out TargetHealthHandler targetHealthHandler))
+                DirectionToTarget = directionToTarget.normalized;
+
+                if (targetHit.TryGetComponent(out TargetHealth targetHealth) || targetHit.transform.parent.TryGetComponent(out targetHealth))
                 {
-                    DirectionToTarget = directionToTarget;
-                    return targetHealthHandler;
+                    return targetHealth;
                 }
             }
         }

@@ -1,14 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D), typeof(BearStatusHandler))]
-[RequireComponent(typeof(BearAnimatorHandler), typeof(BearAttackHandler), typeof(BearTargetSearcher))]
-
 public class BearMover : Mover
 {
     private WaitForSeconds _waitForSeconds;
-    private BearStatusHandler _bearStatusHandler;
-    private BearAttackHandler _bearAttackHandler;
+    private BearStatus _bearStatus;
+    private BearAttacker _bearAttacker;
     private BearTargetSearcher _bearTargetSearcher;
     private Coroutine _turnCoroutine;
 
@@ -16,9 +13,9 @@ public class BearMover : Mover
     {
         float turnDelay = 1;
         _waitForSeconds = new WaitForSeconds(turnDelay);
-        _bearStatusHandler = GetComponent<BearStatusHandler>();
-        _bearAttackHandler = GetComponent<BearAttackHandler>();
-        _bearTargetSearcher = GetComponent<BearTargetSearcher>();
+        _bearStatus = TryGetComponent(out BearStatus bearStatus) ? bearStatus : null;
+        _bearAttacker = TryGetComponent(out BearAttacker bearAttacker) ? bearAttacker : null;
+        _bearTargetSearcher = TryGetComponent(out BearTargetSearcher bearTargetSearcher) ? bearTargetSearcher : null;
         Direction = Vector2.right;
     }
 
@@ -29,32 +26,32 @@ public class BearMover : Mover
 
     private void Move()
     {
-        if (!_bearAttackHandler.IsWaiting)
+        if (!_bearAttacker.IsWaiting)
         {
-            if(_bearStatusHandler.IsGroundNear)
+            if(_bearStatus.IsGroundNear)
             {
-                _bearStatusHandler.SetRunStatus();
+                _bearStatus.SetRunStatus();
 
-                if (_bearTargetSearcher.DistanceToTarget > _bearAttackHandler.AttackRadius)
+                if (_bearTargetSearcher.DistanceToTarget > _bearAttacker.AttackRadius)
                 {
-                    transform.position = Vector2.MoveTowards(transform.position, _bearTargetSearcher.Target.transform.position, _speed * Time.deltaTime);
+                    transform.position = Vector2.MoveTowards(transform.position, _bearTargetSearcher.Target.transform.position, Speed * Time.deltaTime);
                     Direction = _bearTargetSearcher.DirectionToTarget.x > 0 ? Vector2.right : Vector2.left;
                 }
                 else
                 {
-                    transform.Translate(Direction * _speed * Time.deltaTime);
+                    transform.Translate(Direction * Speed * Time.deltaTime);
                 }
             }
             else
             {
-                _bearStatusHandler.ResetRunStatus();
+                _bearStatus.ResetRunStatus();
                 _turnCoroutine ??= StartCoroutine(Turn());
             }
         }
         else
         {
             Direction = _bearTargetSearcher.DirectionToTarget.x > 0 ? Vector2.right : Vector2.left;
-            _bearStatusHandler.ResetRunStatus();
+            _bearStatus.ResetRunStatus();
         }
     }
 

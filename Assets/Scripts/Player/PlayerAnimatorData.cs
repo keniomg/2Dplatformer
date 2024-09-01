@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class PlayerAnimatorData : MonoBehaviour
+public class PlayerAnimatorData : AnimatorData
 {
-    public static class Parameters
+    public static new class Parameters
     {
         public static readonly int IsFall = Animator.StringToHash(nameof(IsFall));
         public static readonly int IsJump = Animator.StringToHash(nameof(IsJump));

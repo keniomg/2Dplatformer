@@ -4,34 +4,34 @@ using UnityEngine.Pool;
 
 public class InteractiveObjectsSpawner<Object> : MonoBehaviour where Object : InteractiveObject
 {
-    [SerializeField] protected Object _interactiveObject;
-    [SerializeField] protected Transform[] _spawnPoints;
-    [SerializeField] protected LayerMask _interactiveObjects;
+    [SerializeField] protected Object InteractiveObject;
+    [SerializeField] protected Transform[] SpawnPoints;
+    [SerializeField] protected LayerMask InteractiveObjects;
 
-    protected int _poolCapacity;
-    protected int _poolMaximumSize;
-    protected int _currentNonOccupiedSpawnPoint;
-    protected ObjectPool<Object> _pool;
+    protected int PoolCapacity;
+    protected int PoolMaximumSize;
+    protected int CurrentNonOccupiedSpawnPoint;
+    protected ObjectPool<Object> Pool;
 
     protected virtual void Awake()
     {
-        _poolMaximumSize = _spawnPoints.Length;
+        PoolMaximumSize = SpawnPoints.Length;
+        PoolCapacity = 2;
+        PoolMaximumSize = 5;
 
-        _pool = new ObjectPool<Object>(
-            createFunc: () => Instantiate(_interactiveObject),
+        Pool = new ObjectPool<Object>(
+            createFunc: () => Instantiate(InteractiveObject),
             actionOnGet: (interactiveObject) => AccompanyGet(interactiveObject),
             actionOnRelease: (interactiveObject) => AccompanyRelease(interactiveObject),
             actionOnDestroy: (interactiveObject) => Destroy(interactiveObject),
             collectionCheck: true,
-            defaultCapacity: _poolCapacity,
-            maxSize: _poolMaximumSize);
+            defaultCapacity: PoolCapacity,
+            maxSize: PoolMaximumSize);
     }
 
     protected virtual void Start()
     {
         StartCoroutine(SpawnObject());
-        _poolCapacity = 2;
-        _poolMaximumSize = 5;
     }
 
     protected virtual void AccompanyGet(Object interactiveObject)
@@ -47,21 +47,21 @@ public class InteractiveObjectsSpawner<Object> : MonoBehaviour where Object : In
 
     protected void SetObjectPosition(Object interactiveObject)
     {
-        Vector2 spawnPosition = _spawnPoints[_currentNonOccupiedSpawnPoint].transform.position;
+        Vector2 spawnPosition = SpawnPoints[CurrentNonOccupiedSpawnPoint].transform.position;
         interactiveObject.transform.position = spawnPosition;
     }
 
     protected bool GetSpawnPointsOccupiedStatus()
     {
-        float occupiedCheckRadius = _interactiveObject.transform.localScale.x / 2;
+        float occupiedCheckRadius = InteractiveObject.transform.localScale.x / 2;
 
-        for (int i = 0; i < _spawnPoints.Length; i++)
+        for (int i = 0; i < SpawnPoints.Length; i++)
         {
-            bool isSpawnPointsOccupied = Physics2D.OverlapCircle(_spawnPoints[i].transform.position, occupiedCheckRadius, _interactiveObjects);
+            bool isSpawnPointsOccupied = Physics2D.OverlapCircle(SpawnPoints[i].transform.position, occupiedCheckRadius, InteractiveObjects);
 
             if (isSpawnPointsOccupied == false)
             {
-                _currentNonOccupiedSpawnPoint = i;
+                CurrentNonOccupiedSpawnPoint = i;
                 return false;
             }
         }
@@ -78,7 +78,7 @@ public class InteractiveObjectsSpawner<Object> : MonoBehaviour where Object : In
         {
             if (GetSpawnPointsOccupiedStatus() == false)
             {
-                _pool.Get();
+                Pool.Get();
             }
 
             yield return waitForSeconds;
@@ -89,7 +89,7 @@ public class InteractiveObjectsSpawner<Object> : MonoBehaviour where Object : In
     {
         WaitForSeconds waitForSeconds = new(animationDuration);
         yield return waitForSeconds;
-        _pool.Release(interactiveObject);
+        Pool.Release(interactiveObject);
     }
 
     protected void OnPickedUp(Object interactiveObject)

@@ -1,30 +1,23 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D), typeof(PlayerStatusHandler))]
-[RequireComponent(typeof(PlayerAnimatorHandler), typeof(PlayerInputReader), typeof(GroundDetector))]
-
 public class PlayerMover : Mover
 {
     [SerializeField] private float _jumpForce;
 
-    private GroundDetector _groundDetector;
+    private PlayerGroundDetector _groundDetector;
     private Rigidbody2D _rigidbody;
     private PlayerInputReader _playerInputReader;
 
     private void Start()
     {
-        _groundDetector = GetComponent<GroundDetector>();
         _rigidbody = GetComponent<Rigidbody2D>();
-        _playerInputReader = GetComponent<PlayerInputReader>();
-    }
-
-    private void Update()
-    {
-        ManageDirection();
+        _groundDetector = TryGetComponent(out PlayerGroundDetector groundDetector) ? groundDetector : null;
+        _playerInputReader = TryGetComponent(out PlayerInputReader playerInputReader) ? playerInputReader : null;
     }
 
     private void FixedUpdate()
     {
+        ManageDirection();
         Move();
     }
 
@@ -42,7 +35,7 @@ public class PlayerMover : Mover
 
     private void Run()
     {
-        Vector2 horizontalMovement = new(_playerInputReader.HorizontalAxisValue * _speed, _rigidbody.velocity.y);
+        Vector2 horizontalMovement = new(_playerInputReader.HorizontalAxisValue * Speed, _rigidbody.velocity.y);
         _rigidbody.velocity = horizontalMovement;
     }
 

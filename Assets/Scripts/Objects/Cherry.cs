@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(CircleCollider2D), typeof(Animator))]
+[RequireComponent(typeof(CircleCollider2D), typeof(UnityEngine.Animator))]
 
 public class Cherry : InteractiveObject
 {
@@ -18,6 +18,6 @@ public class Cherry : InteractiveObject
     public override void SetPickedUpStatus()
     {
         PickedUp?.Invoke(this);
-        _animator.SetBool(CherryAnimatorData.Parameters.IsPickedUp, true);
+        Animator.SetBool(CherryAnimatorData.Parameters.IsPickedUp, true);
     }
 }

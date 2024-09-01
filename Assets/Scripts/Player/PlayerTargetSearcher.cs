@@ -1,18 +1,13 @@
-using UnityEngine;
-
-[RequireComponent(typeof(PlayerInputReader))]
-
 public class PlayerTargetSearcher : TargetSearcher
 {
     private PlayerInputReader _playerInputReader;
 
-    protected override void Start()
+    protected void Start()
     {
-        base.Start();
-        _playerInputReader = GetComponent<PlayerInputReader>();
+        _playerInputReader = TryGetComponent(out PlayerInputReader playerInputReader) ? playerInputReader : null;
     }
 
-    protected void Update()
+    private void Update()
     {
         SearchBear();
     }
@@ -21,7 +16,7 @@ public class PlayerTargetSearcher : TargetSearcher
     {
         if (_playerInputReader.IsAttackKeyInputed)
         {
-            Target = GetTarget<BearHealthHandler>();
+            Target = GetTarget<BearHealth>();
         }
     }
 }

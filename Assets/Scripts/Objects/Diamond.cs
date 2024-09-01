@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(CircleCollider2D), typeof(Animator))]
+[RequireComponent(typeof(CircleCollider2D), typeof(UnityEngine.Animator))]
 
 public class Diamond : InteractiveObject
 {
@@ -10,6 +10,6 @@ public class Diamond : InteractiveObject
     public override void SetPickedUpStatus()
     {
         PickedUp?.Invoke(this);
-        _animator.SetBool(DiamondAnimatorData.Parameters.IsPickedUp, true);
+        Animator.SetBool(DiamondAnimatorData.Parameters.IsPickedUp, true);
     }
 }

@@ -11,7 +11,7 @@ public class BearTargetSearcher : TargetSearcher
 
     private float GetDistanceToTarget()
     {
-        Target = GetTarget<PlayerHealthHandler>();
+        Target = GetTarget<PlayerHealth>();
         float distance = 0;
 
         if (Target != null)
