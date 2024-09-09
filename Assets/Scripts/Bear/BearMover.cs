@@ -6,40 +6,37 @@ public class BearMover : Mover
     private WaitForSeconds _waitForSeconds;
     private BearStatus _bearStatus;
     private BearAttacker _bearAttacker;
-    private BearTargetSearcher _bearTargetSearcher;
     private Coroutine _turnCoroutine;
 
     private void Start()
     {
         float turnDelay = 1;
         _waitForSeconds = new WaitForSeconds(turnDelay);
-        _bearStatus = TryGetComponent(out BearStatus bearStatus) ? bearStatus : null;
-        _bearAttacker = TryGetComponent(out BearAttacker bearAttacker) ? bearAttacker : null;
-        _bearTargetSearcher = TryGetComponent(out BearTargetSearcher bearTargetSearcher) ? bearTargetSearcher : null;
-        Direction = Vector2.right;
+        MoveDirection = Vector2.right;
     }
 
-    private void FixedUpdate()
+    public void Initialize(BearStatus bearStatus, BearAttacker bearAttacker)
     {
-        Move();
+        _bearStatus = bearStatus;
+        _bearAttacker = bearAttacker;
     }
 
-    private void Move()
+    public void Move()
     {
-        if (!_bearAttacker.IsWaiting)
+        if (!_bearStatus.IsWaiting)
         {
-            if(_bearStatus.IsGroundNear)
+            if (_bearStatus.IsGroundNear)
             {
                 _bearStatus.SetRunStatus();
 
-                if (_bearTargetSearcher.DistanceToTarget > _bearAttacker.AttackRadius)
+                if (!_bearAttacker.IsAttackRangeEnough && _bearAttacker.Target != null)
                 {
-                    transform.position = Vector2.MoveTowards(transform.position, _bearTargetSearcher.Target.transform.position, Speed * Time.deltaTime);
-                    Direction = _bearTargetSearcher.DirectionToTarget.x > 0 ? Vector2.right : Vector2.left;
+                    transform.position = Vector2.MoveTowards(transform.position, _bearAttacker.Target.transform.position, Speed * Time.deltaTime);
+                    MoveDirection = _bearAttacker.AttackDirection.x > 0 ? Vector2.right : Vector2.left;
                 }
                 else
                 {
-                    transform.Translate(Direction * Speed * Time.deltaTime);
+                    transform.Translate(MoveDirection * Speed * Time.deltaTime);
                 }
             }
             else
@@ -50,15 +47,17 @@ public class BearMover : Mover
         }
         else
         {
-            Direction = _bearTargetSearcher.DirectionToTarget.x > 0 ? Vector2.right : Vector2.left;
+            MoveDirection = _bearAttacker.AttackDirection.x > 0 ? Vector2.right : Vector2.left;
             _bearStatus.ResetRunStatus();
         }
+
+        _bearStatus.InitializeMoveDirection(MoveDirection);
     }
 
     private IEnumerator Turn()
     {
         yield return _waitForSeconds;
-        Direction = (Direction == Vector2.right) ? Vector2.left : Vector2.right;
+        MoveDirection = (MoveDirection == Vector2.right) ? Vector2.left : Vector2.right;
         yield return _waitForSeconds;
         _turnCoroutine = null;
     }

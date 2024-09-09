@@ -2,22 +2,14 @@ public class PlayerAttacker : Attacker
 {
     private PlayerInputReader _playerInputReader;
 
-    protected override void Start()
+    public void Inititalize(PlayerInputReader playerInputReader, PlayerAnimatorData playerAnimatorData, PlayerTargetSearcher playerTargetSearcher)
     {
-        _playerInputReader = TryGetComponent(out PlayerInputReader playerInputReader) ? playerInputReader : null;
-        AnimatorData = TryGetComponent(out PlayerAnimatorData playerAnimatorData) ? playerAnimatorData : null;
-        Searcher = TryGetComponent(out PlayerTargetSearcher playerTargetSearcher) ? playerTargetSearcher : null;
-        Mover = TryGetComponent(out PlayerMover mover) ? mover : null;
-
-        base.Start();
+        _playerInputReader = playerInputReader;
+        AnimatorData = playerAnimatorData;
+        Searcher = playerTargetSearcher;
     }
 
-    private void FixedUpdate()
-    {
-        AttackWithInput();
-    }
-
-    private void AttackWithInput()
+    public void AttackWithInput()
     {
         if (_playerInputReader.IsAttackKeyInputed)
         {

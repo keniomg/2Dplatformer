@@ -1,16 +1,20 @@
+using UnityEngine;
+
 public class BearStatus : Status
 {
-    private BearGroundDetector _bearGroundDetector;
-    private BearAttacker _bearAttack;
+    private BearAttacker _bearAttacker;
+    private BearGroundDetector _groundDetector;
 
+    public Vector2 MoveDirection { get; private set; }
     public bool IsRun { get; private set; }
-    public bool IsGroundNear => _bearGroundDetector.GetGroundNearStatus();
-    public bool IsAttack => _bearAttack.IsAttack;
+    public bool IsGroundNear => _groundDetector.GetGroundNearStatus();
+    public bool IsAttack => _bearAttacker.IsAttack;
+    public bool IsWaiting => _bearAttacker.IsWaiting;
 
-    private void Start()
+    public void Initialize(BearGroundDetector bearGroundDetector, BearAttacker bearAttacker)
     {
-        _bearGroundDetector = TryGetComponent(out BearGroundDetector bearGroundDetector) ? bearGroundDetector : null;
-        _bearAttack = TryGetComponent(out BearAttacker bearAttacker) ? bearAttacker : null;
+        _groundDetector = bearGroundDetector;
+        _bearAttacker = bearAttacker;
     }
 
     public void SetRunStatus()
@@ -21,5 +25,11 @@ public class BearStatus : Status
     public void ResetRunStatus()
     {
         IsRun = false;
+    }
+
+    public void InitializeMoveDirection(Vector2 moveDirection)
+    {
+        MoveDirection = moveDirection;
+        _groundDetector.SetCheckRayDirection(MoveDirection);
     }
 }

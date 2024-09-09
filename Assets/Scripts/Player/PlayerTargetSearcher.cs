@@ -1,22 +1,37 @@
+using UnityEngine;
+
 public class PlayerTargetSearcher : TargetSearcher
 {
-    private PlayerInputReader _playerInputReader;
+    private PlayerMover _playerMover;
 
-    protected void Start()
+    public void Initialize(PlayerMover playerMover)
     {
-        _playerInputReader = TryGetComponent(out PlayerInputReader playerInputReader) ? playerInputReader : null;
+        _playerMover = playerMover;
     }
 
-    private void Update()
+    public void InititalizeTarget()
     {
-        SearchBear();
+        Target = GetTarget<BearHealth>();
     }
 
-    private void SearchBear()
+    public override TargetHealth GetTarget<TargetHealth>()
     {
-        if (_playerInputReader.IsAttackKeyInputed)
+        RaycastHit2D targetHit = Physics2D.Raycast(transform.position, _playerMover.MoveDirection, TargetSearchRadius, TargetLayer);
+
+        if (targetHit.collider != null)
         {
-            Target = GetTarget<BearHealth>();
+            Vector2 directionToTarget = targetHit.transform.position - transform.position;
+            RaycastHit2D groundHit = Physics2D.Raycast(transform.position, directionToTarget.normalized, directionToTarget.magnitude, Ground);
+
+            if (groundHit.collider == null)
+            {
+                if (targetHit.collider.transform.parent.TryGetComponent(out TargetHealth targetHealth))
+                {
+                    return targetHealth;
+                }
+            }
         }
+
+        return null;
     }
 }

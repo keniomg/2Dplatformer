@@ -5,8 +5,9 @@ public class ObjectAnimator : MonoBehaviour
     [SerializeField] protected GameObject AnimatingObject;
 
     protected Animator Animator;
+    protected Status Status;
+    protected Mover Mover;
 
-    private Mover _mover;
     private Vector2 _originalScale;
     private Vector2 _rightSideDirection;
     private Vector2 _leftSideDirection;
@@ -16,21 +17,21 @@ public class ObjectAnimator : MonoBehaviour
         _originalScale = transform.localScale;
         _rightSideDirection = new(Mathf.Abs(_originalScale.x), _originalScale.y);
         _leftSideDirection = new(-Mathf.Abs(_originalScale.x), _originalScale.y);
-        _mover = TryGetComponent(out Mover mover) ? mover : null;
 
         Animator = AnimatingObject.TryGetComponent(out Animator animator) ? animator : null;
     }
 
-    protected void Update()
+    public void Initialize(Mover mover, Status status)
     {
-        ManageAnimation();
+        Mover = mover;
+        Status = status;
     }
 
-    protected virtual void ManageAnimation()
+    public void ManageAnimation()
     {
         UpdateAnimatorParameters();
 
-        transform.localScale = _mover.Direction == Vector2.right ? _rightSideDirection : _leftSideDirection;
+        transform.localScale = Mover.MoveDirection == Vector2.right ? _rightSideDirection : _leftSideDirection;
     }
 
     protected virtual void UpdateAnimatorParameters() { }

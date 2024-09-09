@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 118ba241603d5bf4fb8a5dd06502cfc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetSearchRadius: 7
+  TargetSearchRadius: 3
   TargetLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -143,6 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackDamage: 5
   KnockbackForce: 1800
+  AttackClip: {fileID: 7400000, guid: 10ed19d55802f6847bed9c1a69e23b4a, type: 2}
 --- !u!114 &8325756089193973009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +184,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0a829e9b33edd74b9be76798f83e6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Attack: {fileID: 7400000, guid: 10ed19d55802f6847bed9c1a69e23b4a, type: 2}
 --- !u!114 &2090977022344801232
 MonoBehaviour:
   m_ObjectHideFlags: 0

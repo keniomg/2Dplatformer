@@ -10,12 +10,7 @@ public class PlayerInputReader : MonoBehaviour
     public bool IsJumpKeyInputed {get; private set; }
     public bool IsAttackKeyInputed { get; private set; }
 
-    private void Update()
-    {
-        HandleInput();
-    }
-
-    private void HandleInput()
+    public void HandleInput()
     {
         HorizontalAxisValue = Input.GetAxis(Horizontal);
         IsJumpKeyInputed = Input.GetKeyDown(JumpKey);

@@ -4,33 +4,28 @@ public class PlayerMover : Mover
 {
     [SerializeField] private float _jumpForce;
 
-    private PlayerGroundDetector _groundDetector;
+    private PlayerStatus _playerStatus;
     private Rigidbody2D _rigidbody;
     private PlayerInputReader _playerInputReader;
 
-    private void Start()
+    public void Initialize(Rigidbody2D rigidbody, PlayerStatus playerStatus, PlayerInputReader playerInputReader)
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _groundDetector = TryGetComponent(out PlayerGroundDetector groundDetector) ? groundDetector : null;
-        _playerInputReader = TryGetComponent(out PlayerInputReader playerInputReader) ? playerInputReader : null;
+        _rigidbody = rigidbody;
+        _playerStatus = playerStatus;
+        _playerInputReader = playerInputReader;
     }
 
-    private void FixedUpdate()
+    public void Move()
     {
         ManageDirection();
-        Move();
+        Run();
+        Jump();
     }
 
     private void ManageDirection()
     {
         if (_rigidbody.velocity.x != 0)
-            Direction = _rigidbody.velocity.x > 0 ? Vector2.right : Vector2.left;
-    }
-
-    private void Move()
-    {
-        Run();
-        Jump();
+            MoveDirection = _rigidbody.velocity.x > 0 ? Vector2.right : Vector2.left;
     }
 
     private void Run()
@@ -41,7 +36,7 @@ public class PlayerMover : Mover
 
     private void Jump()
     {
-        if (_playerInputReader.IsJumpKeyInputed && _groundDetector.IsGrounded)
+        if (_playerInputReader.IsJumpKeyInputed && _playerStatus.IsGrounded)
             _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
     }
 }

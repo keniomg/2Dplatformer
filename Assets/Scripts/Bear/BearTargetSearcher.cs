@@ -4,14 +4,14 @@ public class BearTargetSearcher : TargetSearcher
 {
     public float DistanceToTarget {get; private set; }
 
-    private void Update()
+    public void InititalizeTarget()
     {
+        Target = GetTarget<PlayerHealth>();
         DistanceToTarget = GetDistanceToTarget();
     }
 
     private float GetDistanceToTarget()
     {
-        Target = GetTarget<PlayerHealth>();
         float distance = 0;
 
         if (Target != null)

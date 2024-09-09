@@ -6,5 +6,5 @@ public class Mover : MonoBehaviour
 {
     [SerializeField] protected float Speed;
 
-    public Vector2 Direction {get; protected set; }
+    public Vector2 MoveDirection { get; protected set; }
 }

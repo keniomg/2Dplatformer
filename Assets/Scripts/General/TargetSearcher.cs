@@ -6,10 +6,9 @@ public class TargetSearcher : MonoBehaviour
     [SerializeField] protected LayerMask TargetLayer;
     [SerializeField] protected LayerMask Ground;
 
-    public Vector2 DirectionToTarget { get; private set; }
     public Health Target { get; protected set; }
 
-    protected TargetHealth GetTarget<TargetHealth>() where TargetHealth : Health
+    public virtual TargetHealth GetTarget<TargetHealth>() where TargetHealth : Health
     {
         Collider2D targetHit = Physics2D.OverlapCircle(transform.position, TargetSearchRadius, TargetLayer);
 
@@ -20,8 +19,6 @@ public class TargetSearcher : MonoBehaviour
 
             if (groundHit.collider == null)
             {
-                DirectionToTarget = directionToTarget.normalized;
-
                 if (targetHit.TryGetComponent(out TargetHealth targetHealth) || targetHit.transform.parent.TryGetComponent(out targetHealth))
                 {
                     return targetHealth;

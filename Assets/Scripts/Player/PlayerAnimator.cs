@@ -8,7 +8,7 @@ public class PlayerAnimator : ObjectAnimator
     {
         base.Start();
 
-        _playerStatus = TryGetComponent(out PlayerStatus playerStatus) ? playerStatus : null;
+        _playerStatus = (PlayerStatus)Status;
     }
 
     protected override void UpdateAnimatorParameters()

@@ -4,9 +4,9 @@ public class PlayerCollider : MonoBehaviour
 {
     private PlayerHealth _health;
 
-    private void Start()
+    public void Initialize(PlayerHealth playerHealth)
     {
-        _health = TryGetComponent(out PlayerHealth playerHealth) ? playerHealth : null;
+        _health = playerHealth;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

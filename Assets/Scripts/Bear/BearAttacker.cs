@@ -4,34 +4,40 @@ public class BearAttacker : Attacker
 {
     [SerializeField] private float _attackRadius;
 
-    private BearTargetSearcher _bearSearcher;
+    private BearTargetSearcher _bearTargetSearcher;
 
     public float AttackRadius => _attackRadius;
-    public bool IsWaiting => !CanAttack;
+    public bool IsWaiting => !IsAttackReady;
+    public bool IsAttackRangeEnough {get; private set; }
+    public Health Target {get; private set; }
 
     protected override void Start()
     {
-        Mover = TryGetComponent(out BearMover bearMover) ? bearMover : null;
-        AnimatorData = TryGetComponent(out AnimatorData animatorData) ? animatorData : null;
-        _bearSearcher = TryGetComponent(out BearTargetSearcher bearTargetSearcher) ? bearTargetSearcher : null;
-        Searcher = _bearSearcher;
-
         base.Start();
 
         AttackDelay = 2;
         WaitAferAttackDelay = new(AttackDelay);
     }
 
-    private void FixedUpdate()
+    public void Initialize(BearAnimatorData animatorData, BearTargetSearcher bearTargetSearcher)
     {
-        AttackPlayer();
+        AnimatorData = (BearAnimatorData)AnimatorData;
+        AnimatorData = animatorData;
+        _bearTargetSearcher = bearTargetSearcher;
+        Searcher = _bearTargetSearcher;
     }
 
-    private void AttackPlayer()
+    public void ManageAttackParameters()
     {
-        if (_bearSearcher.Target != null)
+        Target = _bearTargetSearcher.Target;
+        IsAttackRangeEnough = (_bearTargetSearcher.DistanceToTarget <= _attackRadius);
+    }
+
+    public void AttackPlayer()
+    {
+        if (_bearTargetSearcher.Target != null)
         {
-            if (_bearSearcher.DistanceToTarget <= _attackRadius)
+            if (IsAttackRangeEnough && _bearTargetSearcher.DistanceToTarget != 0)
             {
                 Attack<PlayerHealth>();
             }
