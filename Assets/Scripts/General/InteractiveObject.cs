@@ -9,7 +9,7 @@ public class InteractiveObject : MonoBehaviour
 
     protected Animator Animator;
 
-    public event Action<InteractiveObject> PickedUp;
+    public virtual event Action<InteractiveObject> PickedUp;
 
     protected virtual void Start()
     {

@@ -6,7 +6,7 @@ public class BearAnimator : ObjectAnimator
     {
         base.Start();
 
-        _bearStatus = TryGetComponent(out BearStatus bearStatus) ? bearStatus : null;
+        _bearStatus = (BearStatus)Status;
     }
 
     protected override void UpdateAnimatorParameters()

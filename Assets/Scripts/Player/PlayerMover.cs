@@ -4,14 +4,12 @@ public class PlayerMover : Mover
 {
     [SerializeField] private float _jumpForce;
 
-    private PlayerStatus _playerStatus;
     private Rigidbody2D _rigidbody;
     private PlayerInputReader _playerInputReader;
 
-    public void Initialize(Rigidbody2D rigidbody, PlayerStatus playerStatus, PlayerInputReader playerInputReader)
+    public void Initialize(Rigidbody2D rigidbody, PlayerInputReader playerInputReader)
     {
         _rigidbody = rigidbody;
-        _playerStatus = playerStatus;
         _playerInputReader = playerInputReader;
     }
 
@@ -36,7 +34,10 @@ public class PlayerMover : Mover
 
     private void Jump()
     {
-        if (_playerInputReader.IsJumpKeyInputed && _playerStatus.IsGrounded)
+        if (_playerInputReader.IsJumpInputed)
+        {
             _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+            _playerInputReader.ResetJumpInput();
+        }
     }
 }

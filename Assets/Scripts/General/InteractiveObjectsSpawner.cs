@@ -2,16 +2,16 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class InteractiveObjectsSpawner<Object> : MonoBehaviour where Object : InteractiveObject
+public class InteractiveObjectsSpawner : MonoBehaviour
 {
-    [SerializeField] protected Object InteractiveObject;
+    [SerializeField] protected InteractiveObject InteractiveObject;
     [SerializeField] protected Transform[] SpawnPoints;
     [SerializeField] protected LayerMask InteractiveObjects;
 
     protected int PoolCapacity;
     protected int PoolMaximumSize;
     protected int CurrentNonOccupiedSpawnPoint;
-    protected ObjectPool<Object> Pool;
+    protected ObjectPool<InteractiveObject> Pool;
 
     protected virtual void Awake()
     {
@@ -19,7 +19,7 @@ public class InteractiveObjectsSpawner<Object> : MonoBehaviour where Object : In
         PoolCapacity = 2;
         PoolMaximumSize = 5;
 
-        Pool = new ObjectPool<Object>(
+        Pool = new ObjectPool<InteractiveObject>(
             createFunc: () => Instantiate(InteractiveObject),
             actionOnGet: (interactiveObject) => AccompanyGet(interactiveObject),
             actionOnRelease: (interactiveObject) => AccompanyRelease(interactiveObject),
@@ -34,18 +34,20 @@ public class InteractiveObjectsSpawner<Object> : MonoBehaviour where Object : In
         StartCoroutine(SpawnObject());
     }
 
-    protected virtual void AccompanyGet(Object interactiveObject)
+    protected virtual void AccompanyGet(InteractiveObject interactiveObject)
     {
         interactiveObject.gameObject.SetActive(true);
         SetObjectPosition(interactiveObject);
+        interactiveObject.PickedUp += OnPickedUp;
     }
 
-    protected virtual void AccompanyRelease(Object interactiveObject)
+    protected virtual void AccompanyRelease(InteractiveObject interactiveObject)
     {
         interactiveObject.gameObject.SetActive(false);
+        interactiveObject.PickedUp -= OnPickedUp;
     }
 
-    protected void SetObjectPosition(Object interactiveObject)
+    protected void SetObjectPosition(InteractiveObject interactiveObject)
     {
         Vector2 spawnPosition = SpawnPoints[CurrentNonOccupiedSpawnPoint].transform.position;
         interactiveObject.transform.position = spawnPosition;
@@ -85,14 +87,18 @@ public class InteractiveObjectsSpawner<Object> : MonoBehaviour where Object : In
         }
     }
 
-    protected IEnumerator ReturnObjectToPool(float animationDuration, Object interactiveObject)
+    protected IEnumerator ReturnObjectToPool(float animationDuration, InteractiveObject interactiveObject)
     {
         WaitForSeconds waitForSeconds = new(animationDuration);
         yield return waitForSeconds;
-        Pool.Release(interactiveObject);
+        
+        if (interactiveObject.gameObject.active)
+        {
+            Pool.Release(interactiveObject);
+        }
     }
 
-    protected void OnPickedUp(Object interactiveObject)
+    protected void OnPickedUp(InteractiveObject interactiveObject)
     {
         StartCoroutine(ReturnObjectToPool(interactiveObject.GetDisappearAnimationDuration(), interactiveObject));
     }

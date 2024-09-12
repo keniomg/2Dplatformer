@@ -1,9 +1,9 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
+
 public class ObjectAnimator : MonoBehaviour
 {
-    [SerializeField] protected GameObject AnimatingObject;
-
     protected Animator Animator;
     protected Status Status;
     protected Mover Mover;
@@ -17,14 +17,13 @@ public class ObjectAnimator : MonoBehaviour
         _originalScale = transform.localScale;
         _rightSideDirection = new(Mathf.Abs(_originalScale.x), _originalScale.y);
         _leftSideDirection = new(-Mathf.Abs(_originalScale.x), _originalScale.y);
-
-        Animator = AnimatingObject.TryGetComponent(out Animator animator) ? animator : null;
+        Animator = TryGetComponent(out Animator animator) ? animator : null;
+        Initialize();
     }
 
-    public void Initialize(Mover mover, Status status)
+    private void Update()
     {
-        Mover = mover;
-        Status = status;
+        ManageAnimation();
     }
 
     public void ManageAnimation()
@@ -35,4 +34,13 @@ public class ObjectAnimator : MonoBehaviour
     }
 
     protected virtual void UpdateAnimatorParameters() { }
+
+    private void Initialize()
+    {
+        if (transform.parent != null)
+        {
+            Mover = transform.parent.TryGetComponent(out Mover mover) ? mover : null;
+            Status = transform.parent.TryGetComponent(out Status status) ? status : null;
+        }
+    }
 }

@@ -1,9 +1,8 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerGroundDetector), typeof(PlayerAnimatorData), typeof(PlayerAnimator))]
+[RequireComponent(typeof(PlayerGroundDetector), typeof(PlayerAnimatorData), typeof(PlayerTargetSearcher))]
 [RequireComponent(typeof(PlayerAttacker), typeof(PlayerCollider), typeof(PlayerHealth))]
 [RequireComponent(typeof(PlayerInputReader), typeof(PlayerMover), typeof(PlayerStatus))]
-[RequireComponent(typeof(PlayerTargetSearcher))]
 
 [RequireComponent(typeof(Rigidbody2D))]
 
@@ -12,7 +11,6 @@ public class Player : MonoBehaviour
     private PlayerTargetSearcher _targetSearcher;
     private PlayerGroundDetector _groundDetector;
     private PlayerAnimatorData _animatorData;
-    private PlayerAnimator _playerAnimator;
     private PlayerInputReader _inputReader;
     private PlayerCollider _collider;
     private PlayerAttacker _attacker;
@@ -38,7 +36,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        _playerAnimator.ManageAnimation();
         _inputReader.HandleInput();
         _targetSearcher.InititalizeTarget();
     }
@@ -49,7 +46,6 @@ public class Player : MonoBehaviour
         _groundDetector = GetComponent<PlayerGroundDetector>();
         _animatorData = GetComponent<PlayerAnimatorData>();
         _inputReader = GetComponent<PlayerInputReader>();
-        _playerAnimator = GetComponent<PlayerAnimator>();
         _collider = GetComponent<PlayerCollider>();
         _attacker = GetComponent<PlayerAttacker>();
         _health = GetComponent<PlayerHealth>();
@@ -61,9 +57,9 @@ public class Player : MonoBehaviour
     {
         _attacker.Inititalize(_inputReader, _animatorData, _targetSearcher);
         _status.Initialize(_rigidbody, _groundDetector, _attacker);
-        _mover.Initialize(_rigidbody, _status, _inputReader);
-        _playerAnimator.Initialize(_mover, _status);
+        _mover.Initialize(_rigidbody, _inputReader);
         _targetSearcher.Initialize(_mover);
+        _inputReader.Initialize(_status);
         _collider.Initialize(_health);
     }
 }
