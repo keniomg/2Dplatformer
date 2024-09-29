@@ -9,7 +9,7 @@ public class PlayerTargetSearcher : TargetSearcher
         _playerMover = playerMover;
     }
 
-    public void InititalizeTarget()
+    public override void InitializeTarget()
     {
         Target = GetTarget<BearHealth>();
     }

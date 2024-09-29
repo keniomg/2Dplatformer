@@ -8,6 +8,8 @@ public class TargetSearcher : MonoBehaviour
 
     public Health Target { get; protected set; }
 
+    public virtual void InitializeTarget() { }
+
     public virtual TargetHealth GetTarget<TargetHealth>() where TargetHealth : Health
     {
         Collider2D targetHit = Physics2D.OverlapCircle(transform.position, TargetSearchRadius, TargetLayer);

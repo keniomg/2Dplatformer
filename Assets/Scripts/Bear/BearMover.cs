@@ -8,17 +8,21 @@ public class BearMover : Mover
     private BearAttacker _bearAttacker;
     private Coroutine _turnCoroutine;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+
         float turnDelay = 1;
         _waitForSeconds = new WaitForSeconds(turnDelay);
         MoveDirection = Vector2.right;
     }
 
-    public void Initialize(BearStatus bearStatus, BearAttacker bearAttacker)
+    public void Initialize(BearStatus bearStatus, BearAttacker bearAttacker, Rigidbody2D rigidbody)
     {
         _bearStatus = bearStatus;
         _bearAttacker = bearAttacker;
+        Attacker = _bearAttacker;
+        Rigidbody = rigidbody;
     }
 
     public void Move()
@@ -52,6 +56,7 @@ public class BearMover : Mover
         }
 
         _bearStatus.InitializeMoveDirection(MoveDirection);
+        DoLunge();
     }
 
     private IEnumerator Turn()

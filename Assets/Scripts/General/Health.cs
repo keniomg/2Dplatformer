@@ -2,30 +2,32 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] protected int MaximumHealthValue;
+    [SerializeField] private int _maximumHealthValue;
 
-    protected int CurrentHealthValue;
     protected int MinimumHealthValue;
 
-    protected virtual void Start()
+    public int CurrentHealthValue { get; protected set; }
+    public int MaximumHealthValue => _maximumHealthValue;
+
+    protected void Start()
     {
         MinimumHealthValue = 0;
-        CurrentHealthValue = MaximumHealthValue;
+        CurrentHealthValue = _maximumHealthValue;
     }
 
-    public virtual void DecreaseHealth(int decreaseValue)
+    public void DecreaseHealth(int decreaseValue)
     {
         if (decreaseValue >= 0)
         {
-            CurrentHealthValue = Mathf.Clamp(CurrentHealthValue - decreaseValue, MinimumHealthValue, MaximumHealthValue);
+            CurrentHealthValue = Mathf.Clamp(CurrentHealthValue - decreaseValue, MinimumHealthValue, _maximumHealthValue);
         }
     }
 
-    public virtual void IncreaseHealth(int increaseValue)
+    public void IncreaseHealth(int increaseValue)
     {
         if (increaseValue >= 0)
         {
-            CurrentHealthValue = Mathf.Clamp(CurrentHealthValue + increaseValue, MinimumHealthValue, MaximumHealthValue);
+            CurrentHealthValue = Mathf.Clamp(CurrentHealthValue + increaseValue, MinimumHealthValue, _maximumHealthValue);
         }
     }
 }

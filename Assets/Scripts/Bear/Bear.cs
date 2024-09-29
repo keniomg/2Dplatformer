@@ -35,7 +35,7 @@ public class Bear : MonoBehaviour
     private void Update()
     {
         _attacker.ManageAttackParameters();
-        _targetSearcher.InititalizeTarget();
+        _targetSearcher.InitializeTarget();
     }
 
     private void GetAllBearComponents()
@@ -53,6 +53,6 @@ public class Bear : MonoBehaviour
     {
         _attacker.Initialize(_animatorData, _targetSearcher);
         _status.Initialize(_groundDetector, _attacker);
-        _mover.Initialize(_status, _attacker);
+        _mover.Initialize(_status, _attacker, _rigidbody);
     }
 }

@@ -4,13 +4,13 @@ public class PlayerMover : Mover
 {
     [SerializeField] private float _jumpForce;
 
-    private Rigidbody2D _rigidbody;
     private PlayerInputReader _playerInputReader;
 
-    public void Initialize(Rigidbody2D rigidbody, PlayerInputReader playerInputReader)
+    public void Initialize(Rigidbody2D rigidbody, PlayerInputReader playerInputReader, Attacker attacker)
     {
-        _rigidbody = rigidbody;
+        Rigidbody = rigidbody;
         _playerInputReader = playerInputReader;
+        Attacker = attacker;
     }
 
     public void Move()
@@ -18,25 +18,26 @@ public class PlayerMover : Mover
         ManageDirection();
         Run();
         Jump();
+        DoLunge();
     }
 
     private void ManageDirection()
     {
-        if (_rigidbody.velocity.x != 0)
-            MoveDirection = _rigidbody.velocity.x > 0 ? Vector2.right : Vector2.left;
+        if (Rigidbody.velocity.x != 0)
+            MoveDirection = Rigidbody.velocity.x > 0 ? Vector2.right : Vector2.left;
     }
 
     private void Run()
     {
-        Vector2 horizontalMovement = new(_playerInputReader.HorizontalAxisValue * Speed, _rigidbody.velocity.y);
-        _rigidbody.velocity = horizontalMovement;
+        Vector2 horizontalMovement = new(_playerInputReader.HorizontalAxisValue * Speed, Rigidbody.velocity.y);
+        Rigidbody.velocity = horizontalMovement;
     }
 
     private void Jump()
     {
         if (_playerInputReader.IsJumpInputed)
         {
-            _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+            Rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
             _playerInputReader.ResetJumpInput();
         }
     }

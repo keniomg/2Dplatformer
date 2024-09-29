@@ -12,11 +12,11 @@ public class Attacker : MonoBehaviour
     protected float AttackDelay;
     protected bool IsAttackReady;
     protected WaitForSeconds WaitWhileAttack;
-    protected WaitForSeconds WaitAferAttackDelay;
+    protected WaitForSeconds WaitAfterAttackDelay;
     protected Coroutine CooldownCoroutine;
 
     public bool IsAttack { get; protected set; }
-    public Vector2 AttackDirection => ManageAttackDirection();
+    public virtual Vector2 AttackDirection { get; protected set; }
 
     protected virtual void Start()
     {
@@ -24,7 +24,7 @@ public class Attacker : MonoBehaviour
         IsAttackReady = true;
         WaitWhileAttack = new(GetAttackAnimationDuration());
         AttackDelay = 0.5f;
-        WaitAferAttackDelay = new(AttackDelay);
+        WaitAfterAttackDelay = new(AttackDelay);
     }
 
     protected virtual void Attack<TargetHealthHandler>() where TargetHealthHandler : Health
@@ -40,12 +40,6 @@ public class Attacker : MonoBehaviour
 
             CooldownCoroutine ??= StartCoroutine(Cooldown());
         }
-    }
-
-    protected Vector2 ManageAttackDirection()
-    {
-        Vector2 attackDirection = Searcher.Target == null ? Vector2.zero : (Searcher.Target.transform.position - transform.position).normalized;
-        return attackDirection;
     }
 
     protected void DealDamage(Health targetHealthHandler)
@@ -69,7 +63,7 @@ public class Attacker : MonoBehaviour
         IsAttack = true;
         yield return WaitWhileAttack;
         IsAttack = false;
-        yield return WaitAferAttackDelay;
+        yield return WaitAfterAttackDelay;
         IsAttackReady = true;
         CooldownCoroutine = null;
     }
