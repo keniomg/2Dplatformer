@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealthBarUI : MonoBehaviour
+public class HealthBarUI : MonoBehaviour
 {
     [SerializeField] protected Slider Slider;
 
-    protected PlayerHealth Health;
+    protected Health Health;
 
-    public void Initialize(PlayerHealth health)
+    public void Initialize(Health health)
     {
         Health = health;
     }

@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerGroundDetector), typeof(PlayerAnimatorData), typeof(PlayerTargetSearcher))]
 [RequireComponent(typeof(PlayerAttacker), typeof(PlayerCollider), typeof(PlayerHealth))]
 [RequireComponent(typeof(PlayerInputReader), typeof(PlayerMover), typeof(PlayerStatus))]
-[RequireComponent(typeof(PlayerHealthTextUI), typeof(PlayerHealthBarUI), typeof(PlayerSmoothHealthBarUI))]
+[RequireComponent(typeof(HealthTextUI), typeof(HealthBarUI), typeof(SmoothHealthBarUI))]
 
 [RequireComponent(typeof(Rigidbody2D))]
 
@@ -18,9 +18,9 @@ public class Player : MonoBehaviour
     private PlayerHealth _health;
     private PlayerStatus _status;
     private PlayerMover _mover;
-    private PlayerHealthTextUI _healthUI;
-    private PlayerHealthBarUI _healthBarUI;
-    private PlayerSmoothHealthBarUI _smoothHealthBarUI;
+    private HealthTextUI _healthTextUI;
+    private HealthBarUI _healthBarUI;
+    private SmoothHealthBarUI _smoothHealthBarUI;
 
     private Rigidbody2D _rigidbody;
 
@@ -30,22 +30,22 @@ public class Player : MonoBehaviour
 
         GetAllPlayerComponents();
         InitializeAll();
-        _healthBarUI.SetMaxValue();
         _smoothHealthBarUI.SetMaxValue();
+        _healthBarUI.SetMaxValue();
     }
 
     private void FixedUpdate()
     {
-        _healthBarUI.ManageHealthBar();
         _smoothHealthBarUI.ManageHealthBar();
         _attacker.AttackWithInput();
+        _healthBarUI.ManageHealthBar();
         _mover.Move();
     }
 
     private void Update()
     {
         _inputReader.HandleInput();
-        _healthUI.ManageHealthText();
+        _healthTextUI.ManageHealthText();
     }
 
     private void GetAllPlayerComponents()
@@ -59,9 +59,9 @@ public class Player : MonoBehaviour
         _health = GetComponent<PlayerHealth>();
         _status = GetComponent<PlayerStatus>();
         _mover = GetComponent<PlayerMover>();
-        _healthUI = GetComponent<PlayerHealthTextUI>();
-        _healthBarUI = GetComponent<PlayerHealthBarUI>();
-        _smoothHealthBarUI = GetComponent<PlayerSmoothHealthBarUI>();
+        _healthTextUI = GetComponent<HealthTextUI>();
+        _smoothHealthBarUI = GetComponent<SmoothHealthBarUI>();
+        _healthBarUI = GetComponent<HealthBarUI>();
     }
 
     private void InitializeAll()
@@ -72,8 +72,8 @@ public class Player : MonoBehaviour
         _targetSearcher.Initialize(_mover);
         _inputReader.Initialize(_status);
         _collider.Initialize(_health);
-        _healthUI.Initialize(_health);
-        _healthBarUI.Initialize(_health);
+        _healthTextUI.Initialize(_health);
         _smoothHealthBarUI.Initialize(_health);
+        _healthBarUI.Initialize(_health);
     }
 }

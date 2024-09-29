@@ -1,13 +1,13 @@
 using TMPro;
 using UnityEngine;
 
-public class PlayerHealthTextUI : MonoBehaviour
+public class HealthTextUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _text;
 
-    private PlayerHealth _health;
+    private Health _health;
 
-    public void Initialize(PlayerHealth health)
+    public void Initialize(Health health)
     {
         _health = health;
     }

@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSmoothHealthBarUI : PlayerHealthBarUI
+public class SmoothHealthBarUI : HealthBarUI
 {
     public override void ManageHealthBar()
     {
