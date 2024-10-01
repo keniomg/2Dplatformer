@@ -18,10 +18,9 @@ public class Bear : MonoBehaviour
 
     private Rigidbody2D _rigidbody;
 
-    private void Start()
+    private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-
         GetAllBearComponents();
         InitializeAll();
     }
@@ -35,7 +34,7 @@ public class Bear : MonoBehaviour
     private void Update()
     {
         _attacker.ManageAttackParameters();
-        _targetSearcher.InitializeTarget();
+        _targetSearcher.InitializeTarget<PlayerHealth>();
     }
 
     private void GetAllBearComponents()

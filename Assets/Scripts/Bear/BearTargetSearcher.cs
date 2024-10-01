@@ -4,9 +4,9 @@ public class BearTargetSearcher : TargetSearcher
 {
     public float DistanceToTarget {get; private set; }
 
-    public override void InitializeTarget()
+    public override void InitializeTarget<TargetHealth>()
     {
-        Target = GetTarget<PlayerHealth>();
+        Target = GetTarget<TargetHealth>();
         DistanceToTarget = GetDistanceToTarget();
     }
 

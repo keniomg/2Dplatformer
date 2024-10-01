@@ -2,13 +2,19 @@ using UnityEngine;
 
 public class TargetSearcher : MonoBehaviour
 {
-    [SerializeField] protected float TargetSearchRadius;
-    [SerializeField] protected LayerMask TargetLayer;
-    [SerializeField] protected LayerMask Ground;
+    [SerializeField] protected float _targetSearchRadius;
+    [SerializeField] protected LayerMask _targetLayer;
+    [SerializeField] protected LayerMask _ground;
 
     public Health Target { get; protected set; }
+    public float TargetSearchRadius => _targetSearchRadius;
+    public LayerMask TargetLayer => _targetLayer;
+    public LayerMask Ground => _ground;
 
-    public virtual void InitializeTarget() { }
+    public virtual void InitializeTarget<TargetHealth>() where TargetHealth : Health
+    {
+        Target = GetTarget<TargetHealth>();
+    }
 
     public virtual TargetHealth GetTarget<TargetHealth>() where TargetHealth : Health
     {
@@ -29,11 +35,5 @@ public class TargetSearcher : MonoBehaviour
         }
 
         return null;
-    }
-
-    protected Vector2 AngleToVector(float angle)
-    {
-        float radian = angle * Mathf.Deg2Rad;
-        return new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
     }
 }

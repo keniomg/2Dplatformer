@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Attacker : MonoBehaviour
 {
-    [SerializeField] protected int AttackDamage;
+    [SerializeField] protected float AttackDamage;
     [SerializeField] protected float KnockbackForce;
     [SerializeField] protected AnimationClip AttackClip;
 

@@ -26,7 +26,7 @@ public class ObjectAnimator : MonoBehaviour
         ManageAnimation();
     }
 
-    public void ManageAnimation()
+    public virtual void ManageAnimation()
     {
         UpdateAnimatorParameters();
 

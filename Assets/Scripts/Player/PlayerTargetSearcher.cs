@@ -9,11 +9,6 @@ public class PlayerTargetSearcher : TargetSearcher
         _playerMover = playerMover;
     }
 
-    public override void InitializeTarget()
-    {
-        Target = GetTarget<BearHealth>();
-    }
-
     public override TargetHealth GetTarget<TargetHealth>()
     {
         RaycastHit2D targetHit = Physics2D.Raycast(transform.position, _playerMover.MoveDirection, TargetSearchRadius, TargetLayer);

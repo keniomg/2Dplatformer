@@ -1,24 +1,25 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBarUI : MonoBehaviour
+[RequireComponent(typeof(Slider))]
+
+public class HealthBarUI : HealthUI
 {
-    [SerializeField] protected Slider Slider;
+    protected Slider Slider;
 
-    protected Health Health;
-
-    public void Initialize(Health health)
+    private void Start()
     {
-        Health = health;
+        Slider = GetComponent<Slider>();
     }
 
-    public void SetMaxValue()
+    protected override void OnHealthChanged(float currentHealth)
     {
-        Slider.maxValue = Health.MaximumHealthValue;
+        Slider.value = currentHealth;
     }
 
-    public virtual void ManageHealthBar()
+    protected override void Initialize(PlayerHealth playerHealth)
     {
-        Slider.value = Health.CurrentHealthValue;
+        base.Initialize(playerHealth); 
+        Slider.value = playerHealth.CurrentHealthValue;
     }
 }

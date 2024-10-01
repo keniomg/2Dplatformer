@@ -19,7 +19,7 @@ public class PlayerAttacker : Attacker
     {
         if (_playerInputReader.IsAttackKeyInputed)
         {
-            Searcher.InitializeTarget();
+            Searcher.InitializeTarget<BearHealth>();
             Attack<BearHealth>();
         }
     }

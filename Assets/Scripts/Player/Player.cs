@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerGroundDetector), typeof(PlayerAnimatorData), typeof(PlayerTargetSearcher))]
 [RequireComponent(typeof(PlayerAttacker), typeof(PlayerCollider), typeof(PlayerHealth))]
 [RequireComponent(typeof(PlayerInputReader), typeof(PlayerMover), typeof(PlayerStatus))]
-[RequireComponent(typeof(HealthTextUI), typeof(HealthBarUI), typeof(SmoothHealthBarUI))]
+//[RequireComponent(typeof(PlayerVampire), typeof(VampirismTargetSearcher))]
 
 [RequireComponent(typeof(Rigidbody2D))]
 
@@ -18,34 +18,28 @@ public class Player : MonoBehaviour
     private PlayerHealth _health;
     private PlayerStatus _status;
     private PlayerMover _mover;
-    private HealthTextUI _healthTextUI;
-    private HealthBarUI _healthBarUI;
-    private SmoothHealthBarUI _smoothHealthBarUI;
+
+    //private PlayerVampire _playerVampire;
+    //private VampirismTargetSearcher _vampirismTargetSearcher;
 
     private Rigidbody2D _rigidbody;
 
-    private void Start()
+    private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-
         GetAllPlayerComponents();
         InitializeAll();
-        _smoothHealthBarUI.SetMaxValue();
-        _healthBarUI.SetMaxValue();
     }
 
     private void FixedUpdate()
     {
-        _smoothHealthBarUI.ManageHealthBar();
         _attacker.AttackWithInput();
-        _healthBarUI.ManageHealthBar();
         _mover.Move();
     }
 
     private void Update()
     {
         _inputReader.HandleInput();
-        _healthTextUI.ManageHealthText();
     }
 
     private void GetAllPlayerComponents()
@@ -59,9 +53,9 @@ public class Player : MonoBehaviour
         _health = GetComponent<PlayerHealth>();
         _status = GetComponent<PlayerStatus>();
         _mover = GetComponent<PlayerMover>();
-        _healthTextUI = GetComponent<HealthTextUI>();
-        _smoothHealthBarUI = GetComponent<SmoothHealthBarUI>();
-        _healthBarUI = GetComponent<HealthBarUI>();
+
+        //_playerVampire = GetComponent<PlayerVampire>();
+        //_vampirismTargetSearcher = GetComponent<VampirismTargetSearcher>();
     }
 
     private void InitializeAll()
@@ -72,8 +66,8 @@ public class Player : MonoBehaviour
         _targetSearcher.Initialize(_mover);
         _inputReader.Initialize(_status);
         _collider.Initialize(_health);
-        _healthTextUI.Initialize(_health);
-        _smoothHealthBarUI.Initialize(_health);
-        _healthBarUI.Initialize(_health);
+
+        //_playerVampire.Initialize(_health, _vampirismTargetSearcher);
+        //_vampirismPlayerUI.Initialize(_playerVampire);
     }
 }
