@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Slider))]
-
 public class HealthBarUI : HealthUI
 {
     protected Slider Slider;

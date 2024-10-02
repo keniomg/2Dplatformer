@@ -3,10 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerGroundDetector), typeof(PlayerAnimatorData), typeof(PlayerTargetSearcher))]
 [RequireComponent(typeof(PlayerAttacker), typeof(PlayerCollider), typeof(PlayerHealth))]
 [RequireComponent(typeof(PlayerInputReader), typeof(PlayerMover), typeof(PlayerStatus))]
-//[RequireComponent(typeof(PlayerVampire), typeof(VampirismTargetSearcher))]
-
-[RequireComponent(typeof(Rigidbody2D))]
-
+[RequireComponent(typeof(Rigidbody2D)/*, typeof(PlayerVampire), typeof(VampirismTargetSearcher)*/)]
 public class Player : MonoBehaviour 
 {
     private PlayerTargetSearcher _targetSearcher;

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
+    [SerializeField] protected Eventer Eventer;
     [SerializeField] private float _maximumHealthValue;
 
     public event Action<float> ValueChanged;

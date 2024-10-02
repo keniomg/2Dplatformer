@@ -2,10 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(BearTargetSearcher), typeof(BearAnimatorData), typeof(BearAttacker))]
 [RequireComponent(typeof(BearGroundDetector), typeof(BearHealth), typeof(BearMover))]
-[RequireComponent(typeof(BearStatus))]
-
-[RequireComponent(typeof(Rigidbody2D))]
-
+[RequireComponent(typeof(BearStatus), typeof(Rigidbody2D))]
 public class Bear : MonoBehaviour 
 {
     private BearTargetSearcher _targetSearcher;

@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D), typeof(Animator))]
-
 public class InteractiveObject : MonoBehaviour
 {
     [SerializeField] protected AnimationClip Disappear;

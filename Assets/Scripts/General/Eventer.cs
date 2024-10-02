@@ -1,10 +1,11 @@
 using System;
+using UnityEngine;
 
-public static class Eventer
+public class Eventer : MonoBehaviour
 {
-    public static event Action<PlayerHealth> PlayerHealthCreated;
+    public event Action<PlayerHealth> PlayerHealthCreated;
 
-    public static void OnPlayerHealthCreated(PlayerHealth playerHealth)
+    public void OnPlayerHealthCreated(PlayerHealth playerHealth)
     {
         PlayerHealthCreated?.Invoke(playerHealth);
     }

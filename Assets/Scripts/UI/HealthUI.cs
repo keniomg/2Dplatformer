@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class HealthUI : MonoBehaviour
+public abstract class HealthUI : MonoBehaviour
 {
+    [SerializeField] protected Eventer Eventer;
+
     protected PlayerHealth Health;
 
     private void OnEnable()
@@ -19,11 +21,11 @@ public class HealthUI : MonoBehaviour
         }
     }
 
-    protected virtual void OnHealthChanged(float currentHealth) { }
-
     protected virtual void Initialize(PlayerHealth playerHealth)
     {
         Health = playerHealth;
         Health.ValueChanged += OnHealthChanged;
     }
+
+    protected abstract void OnHealthChanged(float currentHealth);
 }

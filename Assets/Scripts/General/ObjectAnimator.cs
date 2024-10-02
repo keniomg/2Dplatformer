@@ -1,7 +1,6 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-
 public class ObjectAnimator : MonoBehaviour
 {
     protected Animator Animator;

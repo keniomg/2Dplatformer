@@ -2,7 +2,6 @@ using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
-
 public class HealthTextUI : HealthUI
 {
     private TextMeshProUGUI _text;
@@ -14,6 +13,7 @@ public class HealthTextUI : HealthUI
 
     protected override void OnHealthChanged(float currentHealth)
     {
-        _text.text = $"{currentHealth*100}%";
+        const int TotalPercentCount = 100;
+        _text.text = $"{currentHealth * TotalPercentCount}%";
     }
 }
