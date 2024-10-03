@@ -6,8 +6,10 @@ public class SmoothHealthBarUI : HealthBarUI
     private WaitForSeconds _waitForSeconds;
     private Coroutine _healthChangingCoroutine;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         float healthChangingTime = 0.001f;
         _waitForSeconds = new WaitForSeconds(healthChangingTime);
     }
