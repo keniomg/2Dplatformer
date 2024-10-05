@@ -44,7 +44,7 @@ public class Attacker : MonoBehaviour
 
     protected void DealDamage(Health targetHealthHandler)
     {
-        targetHealthHandler.DecreaseHealth(AttackDamage);
+        targetHealthHandler.Decrease(AttackDamage);
 
         if (targetHealthHandler.TryGetComponent(out Rigidbody2D rigidbody))
         {

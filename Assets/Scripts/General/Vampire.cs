@@ -54,8 +54,8 @@ public class Vampire : MonoBehaviour
         {
             if (TargetSearcher.NearestTarget != null)
             {
-                TargetSearcher.NearestTarget.DecreaseHealth(_vampirismPerSecond);
-                _selfHealth.IncreaseHealth(_vampirismPerSecond);
+                TargetSearcher.NearestTarget.Decrease(_vampirismPerSecond);
+                _selfHealth.Increase(_vampirismPerSecond);
             }
 
             yield return _vampirismDelay;

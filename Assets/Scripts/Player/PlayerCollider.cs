@@ -23,7 +23,7 @@ public class PlayerCollider : MonoBehaviour
 
     private void CollisionCherry(Cherry cherry)
     {
-        _health.IncreaseHealth(cherry.HealingValue);
+        _health.Increase(cherry.HealingValue);
         cherry.SetPickedUpStatus();
     }
 }

@@ -1,7 +1,1 @@
-public class PlayerHealth : Health 
-{
-    private void Start()
-    {
-        Eventer.OnPlayerHealthCreated(this);
-    }
-}
+public class PlayerHealth : Health { }

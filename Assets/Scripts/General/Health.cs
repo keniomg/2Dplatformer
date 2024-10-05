@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] protected Eventer Eventer;
+    [SerializeField] protected UIEventer Eventer;
+
     [SerializeField] private float _maximumHealthValue;
 
-    public event Action<float> ValueChanged;
+    public event Action<float> HealthValueChanged;
 
     protected float MinimumHealthValue;
 
@@ -19,21 +20,31 @@ public class Health : MonoBehaviour
         CurrentHealthValue = _maximumHealthValue;
     }
 
-    public void DecreaseHealth(float decreaseValue)
+    protected virtual void Start()
+    {
+        Eventer.RegisterEvent(name, HealthValueChanged);
+    }
+
+    private void OnDisable()
+    {
+        Eventer.UnregisterEvent(name, HealthValueChanged);
+    }
+
+    public void Decrease(float decreaseValue)
     {
         if (decreaseValue >= 0)
         {
             CurrentHealthValue = Mathf.Clamp(CurrentHealthValue - decreaseValue, MinimumHealthValue, _maximumHealthValue);
-            ValueChanged?.Invoke(CurrentHealthValue / MaximumHealthValue);
+            Eventer.InvokeEvent(name, CurrentHealthValue / MaximumHealthValue);
         }
     }
 
-    public void IncreaseHealth(float increaseValue)
+    public void Increase(float increaseValue)
     {
         if (increaseValue >= 0)
         {
             CurrentHealthValue = Mathf.Clamp(CurrentHealthValue + increaseValue, MinimumHealthValue, _maximumHealthValue);
-            ValueChanged?.Invoke(CurrentHealthValue / MaximumHealthValue);
+            Eventer.InvokeEvent(name, CurrentHealthValue / MaximumHealthValue);
         }
     }
 }

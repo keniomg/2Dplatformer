@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Slider))]
-public abstract class HealthBarUI : HealthUI 
+public class ValueBarViewUI : ValueViewUI 
 {
     protected Slider Slider;
 
@@ -11,8 +11,8 @@ public abstract class HealthBarUI : HealthUI
         Slider = GetComponent<Slider>();
     }
 
-    protected override void OnHealthChanged(float currentHealth)
+    protected override void OnValueChanged(float currentValue)
     {
-        Slider.value = currentHealth;
+        Slider.value = currentValue;
     }
 }
