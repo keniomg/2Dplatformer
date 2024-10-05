@@ -763,6 +763,10 @@ PrefabInstance:
       propertyPath: Health
       value: 
       objectReference: {fileID: 8951660331149969962}
+    - target: {fileID: 3871575175352646331, guid: d61c600474296704fa18cda72fe95d6d, type: 3}
+      propertyPath: ViewedValueObject
+      value: 
+      objectReference: {fileID: 46095334112690287}
     - target: {fileID: 4125002719686798840, guid: d61c600474296704fa18cda72fe95d6d, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -874,32 +878,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4529848897060952140, guid: d61c600474296704fa18cda72fe95d6d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4058651140153549961}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4855737711708364360, guid: d61c600474296704fa18cda72fe95d6d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7138870962308535314}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d61c600474296704fa18cda72fe95d6d, type: 3}
 --- !u!224 &4127029697347093295 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4529848897060952140, guid: d61c600474296704fa18cda72fe95d6d, type: 3}
   m_PrefabInstance: {fileID: 548144164259224419}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4969842646538749227 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4855737711708364360, guid: d61c600474296704fa18cda72fe95d6d, type: 3}
-  m_PrefabInstance: {fileID: 548144164259224419}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7138870962308535314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4969842646538749227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b98ae6762e68c343b698972478549f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Eventer: {fileID: 11400000, guid: 31b166bd971d4c04b977be5fca5bdebe, type: 2}
-  ViewedValueObject: {fileID: 46095334112690287}
