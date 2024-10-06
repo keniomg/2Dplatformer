@@ -3388,6 +3388,10 @@ PrefabInstance:
       propertyPath: _vampireAbilitySprite
       value: 
       objectReference: {fileID: 1322238896}
+    - target: {fileID: 7600980936015532574, guid: b67d74192dce32248930070fd96ea6ea, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7725177727365372057, guid: b67d74192dce32248930070fd96ea6ea, type: 3}
       propertyPath: m_Constraints
       value: 4
