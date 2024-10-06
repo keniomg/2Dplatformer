@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerGroundDetector), typeof(PlayerAnimatorData), typeof(PlayerTargetSearcher))]
 [RequireComponent(typeof(PlayerAttacker), typeof(PlayerCollider), typeof(PlayerHealth))]
 [RequireComponent(typeof(PlayerInputReader), typeof(PlayerMover), typeof(PlayerStatus))]
-[RequireComponent(typeof(Rigidbody2D)/*, typeof(PlayerVampire), typeof(VampirismTargetSearcher)*/)]
+[RequireComponent(typeof(Rigidbody2D), typeof(PlayerVampirism), typeof(VampirismTargetSearcher))]
 public class Player : MonoBehaviour 
 {
     private PlayerTargetSearcher _targetSearcher;
@@ -16,8 +16,8 @@ public class Player : MonoBehaviour
     private PlayerStatus _status;
     private PlayerMover _mover;
 
-    //private PlayerVampire _playerVampire;
-    //private VampirismTargetSearcher _vampirismTargetSearcher;
+    private PlayerVampirism _playerVampire;
+    private VampirismTargetSearcher _vampirismTargetSearcher;
 
     private Rigidbody2D _rigidbody;
 
@@ -51,8 +51,8 @@ public class Player : MonoBehaviour
         _status = GetComponent<PlayerStatus>();
         _mover = GetComponent<PlayerMover>();
 
-        //_playerVampire = GetComponent<PlayerVampire>();
-        //_vampirismTargetSearcher = GetComponent<VampirismTargetSearcher>();
+        _playerVampire = GetComponent<PlayerVampirism>();
+        _vampirismTargetSearcher = GetComponent<VampirismTargetSearcher>();
     }
 
     private void InitializeAll()
@@ -63,8 +63,6 @@ public class Player : MonoBehaviour
         _targetSearcher.Initialize(_mover);
         _inputReader.Initialize(_status);
         _collider.Initialize(_health);
-
-        //_playerVampire.Initialize(_health, _vampirismTargetSearcher);
-        //_vampirismPlayerUI.Initialize(_playerVampire);
+        _playerVampire.Initialize(_health, _vampirismTargetSearcher);
     }
 }

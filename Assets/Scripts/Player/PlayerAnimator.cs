@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class PlayerAnimator : ObjectAnimator
 {
-    //[SerializeField] private PlayerVampire _playerVampire;
-    [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private PlayerVampirism _playerVampire;
+    [SerializeField] private SpriteRenderer _vampireAbilitySprite;
 
     private PlayerStatus _playerStatus;
 
@@ -11,7 +11,7 @@ public class PlayerAnimator : ObjectAnimator
     {
         base.Start();
 
-        //_spriteRenderer.transform.localScale *= _playerVampire.VampirismRadius;
+        _vampireAbilitySprite.transform.localScale *= _playerVampire.VampirismRadius;
         _playerStatus = (PlayerStatus)Status;
     }
 
@@ -19,7 +19,7 @@ public class PlayerAnimator : ObjectAnimator
     {
         base.ManageAnimation();
 
-        //AnimateVampireAbility();
+        AnimateVampireAbility();
     }
 
     protected override void UpdateAnimatorParameters()
@@ -33,15 +33,15 @@ public class PlayerAnimator : ObjectAnimator
         }
     }
 
-    //private void AnimateVampireAbility()
-    //{
-    //    if (_playerVampire.IsAbilityActive)
-    //    {
-    //        _spriteRenderer.gameObject.SetActive(true);
-    //    }
-    //    else
-    //    {
-    //        _spriteRenderer.gameObject.SetActive(false);
-    //    }
-    //}
+    private void AnimateVampireAbility()
+    {
+        if (_playerVampire.IsAbilityActive && !_vampireAbilitySprite.gameObject.activeSelf)
+        {
+            _vampireAbilitySprite.gameObject.SetActive(true);
+        }
+        else if (!_playerVampire.IsAbilityActive)
+        {
+            _vampireAbilitySprite.gameObject.SetActive(false);
+        }
+    }
 }

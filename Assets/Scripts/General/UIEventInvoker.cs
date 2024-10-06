@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New UIEventer", menuName = "UIEventer/Create new UIEventer", order = 51)]
-public class UIEventer : ScriptableObject
+public class UIEventInvoker : ScriptableObject
 {
     private Dictionary<string, Action<float>> _events = new Dictionary<string, Action<float>>();
 

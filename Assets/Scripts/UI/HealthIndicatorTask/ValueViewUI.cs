@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class ValueViewUI : MonoBehaviour
 {
-    [SerializeField] protected UIEventer Eventer;
+    [SerializeField] protected UIEventInvoker Eventer;
     [SerializeField] protected GameObject ViewedValueObject;
 
     protected void OnEnable()

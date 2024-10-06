@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] protected UIEventer Eventer;
+    [SerializeField] protected UIEventInvoker Eventer;
 
     [SerializeField] private float _maximumHealthValue;
 

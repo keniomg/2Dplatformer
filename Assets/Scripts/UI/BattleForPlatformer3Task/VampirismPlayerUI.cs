@@ -6,13 +6,9 @@ public class VampirismPlayerUI : MonoBehaviour
     [SerializeField] private Slider _cooldown;
     [SerializeField] private Slider _abilityDuration;
 
-    private PlayerVampire _playerVampire;
+    private PlayerVampirism _playerVampire;
 
-    private void Start()
-    {
-    }
-
-    public void Initialize(PlayerVampire playerVampire)
+    public void Initialize(PlayerVampirism playerVampire)
     {
         _playerVampire = playerVampire;
         _cooldown.maxValue = _playerVampire.MaximumAbilityCooldown;

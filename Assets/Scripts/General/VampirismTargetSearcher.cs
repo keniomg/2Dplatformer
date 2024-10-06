@@ -12,10 +12,12 @@ public class VampirismTargetSearcher : TargetSearcher
         _targets = new List<Health>();
     }
 
-    public void ChooseNearestTarget<TargetHealth>() where TargetHealth : Health
+    public override TargetHealth GetTarget<TargetHealth>()
     {
-        TargetHealth currentFoundedTarget = GetTarget<TargetHealth>();
+        TargetHealth currentFoundedTarget = base.GetTarget<TargetHealth>();
+        
         float minimumDistance = TargetSearchRadius;
+        float distance;
 
         if (currentFoundedTarget != null && !_targets.Contains(currentFoundedTarget))
         {
@@ -24,13 +26,24 @@ public class VampirismTargetSearcher : TargetSearcher
 
         for (int i = 0; i < _targets.Count; i++)
         {
-            float distance = Vector2.Distance(_targets[i].transform.position, transform.position);
+            distance = Vector2.Distance(_targets[i].transform.position, transform.position);
 
             if (distance < minimumDistance)
             {
-                minimumDistance = distance;
                 NearestTarget = _targets[i];
+                minimumDistance = distance;
+            }
+            else if(distance > TargetSearchRadius)
+            {
+                _targets.RemoveAt(i);
             }
         }
+
+        if (_targets.Count == 0)
+        {
+            NearestTarget = null;
+        }
+
+        return (TargetHealth)NearestTarget;
     }
 }

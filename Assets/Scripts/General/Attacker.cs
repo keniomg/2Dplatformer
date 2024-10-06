@@ -61,9 +61,13 @@ public class Attacker : MonoBehaviour
     {
         IsAttackReady = false;
         IsAttack = true;
+
         yield return WaitWhileAttack;
+
         IsAttack = false;
+
         yield return WaitAfterAttackDelay;
+
         IsAttackReady = true;
         CooldownCoroutine = null;
     }
