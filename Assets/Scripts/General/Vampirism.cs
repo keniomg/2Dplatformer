@@ -96,7 +96,6 @@ public class Vampirism : MonoBehaviour
     private void InvokeAbilityEvent(UIEventInvoker eventer, int currentValue, int maximumValue)
     {
         float abilityCoefficient = (float)currentValue / maximumValue;
-        Debug.Log(abilityCoefficient);
         eventer.InvokeEvent(name, abilityCoefficient);
     }
 }
