@@ -2,7 +2,7 @@ public class PlayerVampirism : Vampirism
 {
     private void Update()
     {
-        if (IsAbilityActive)
+        if (IsActive)
         {
             TargetSearcher.GetTarget<BearHealth>();
         }

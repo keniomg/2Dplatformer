@@ -23,7 +23,7 @@ public class InteractiveObjectsSpawner : MonoBehaviour
             createFunc: () => Instantiate(InteractiveObject),
             actionOnGet: (interactiveObject) => AccompanyGet(interactiveObject),
             actionOnRelease: (interactiveObject) => AccompanyRelease(interactiveObject),
-            actionOnDestroy: (interactiveObject) => Destroy(interactiveObject),
+            actionOnDestroy: (interactiveObject) => Destroy(interactiveObject.gameObject),
             collectionCheck: true,
             defaultCapacity: PoolCapacity,
             maxSize: PoolMaximumSize);

@@ -18,7 +18,7 @@ public class Bear : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        GetAllBearComponents();
+        GetAllComponents();
         InitializeAll();
     }
 
@@ -34,7 +34,7 @@ public class Bear : MonoBehaviour
         _targetSearcher.InitializeTarget<PlayerHealth>();
     }
 
-    private void GetAllBearComponents()
+    private void GetAllComponents()
     {
         _targetSearcher = GetComponent<BearTargetSearcher>();
         _groundDetector = GetComponent<BearGroundDetector>();

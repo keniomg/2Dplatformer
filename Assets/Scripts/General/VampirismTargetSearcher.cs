@@ -1,49 +1,42 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class VampirismTargetSearcher : TargetSearcher
 {
-    private List<Health> _targets;
-
-    public Health NearestTarget {get; private set; }
-
-    private void Start()
-    {
-        _targets = new List<Health>();
-    }
+    public Health NearestTarget { get; private set; }
 
     public override TargetHealth GetTarget<TargetHealth>()
     {
-        TargetHealth currentFoundedTarget = base.GetTarget<TargetHealth>();
-        
-        float minimumDistance = TargetSearchRadius;
-        float distance;
+        List<TargetHealth> targets = GetTargets<TargetHealth>();
 
-        if (currentFoundedTarget != null && !_targets.Contains(currentFoundedTarget))
+        if (targets == null || targets.Count == 0)
         {
-            _targets.Add(currentFoundedTarget);
+            return null;
         }
 
-        for (int i = 0; i < _targets.Count; i++)
-        {
-            distance = Vector2.Distance(_targets[i].transform.position, transform.position);
+        TargetHealth nearestTarget = targets.OrderBy(target => Vector2.Distance(transform.position, target.transform.position)).FirstOrDefault();
+        NearestTarget = nearestTarget;
 
-            if (distance < minimumDistance)
+        return nearestTarget;
+    }
+
+    private List<TargetHealth> GetTargets<TargetHealth>() where TargetHealth : Health
+    {
+        Collider2D[] targetHits = Physics2D.OverlapCircleAll(transform.position, TargetSearchRadius, TargetLayer);
+        List<TargetHealth> targets = new List<TargetHealth>();
+
+        if (targetHits != null)
+        {
+            for (int i = 0; i < targetHits.Length; i++)
             {
-                NearestTarget = _targets[i];
-                minimumDistance = distance;
-            }
-            else if(distance > TargetSearchRadius)
-            {
-                _targets.RemoveAt(i);
+                if (targetHits[i].TryGetComponent(out TargetHealth targetHealth) || targetHits[i].transform.parent.TryGetComponent(out targetHealth))
+                {
+                    targets.Add(targetHealth);
+                }
             }
         }
 
-        if (_targets.Count == 0)
-        {
-            NearestTarget = null;
-        }
-
-        return (TargetHealth)NearestTarget;
+        return targets;
     }
 }

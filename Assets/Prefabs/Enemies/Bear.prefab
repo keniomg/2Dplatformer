@@ -99,8 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 513e27b2b3f593a42a6b46b7b6404c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Eventer: {fileID: 0}
-  _maximumHealthValue: 150
+  Eventer: {fileID: 11400000, guid: 31b166bd971d4c04b977be5fca5bdebe, type: 2}
+  _maximumValue: 150
 --- !u!50 &7905853575858254392
 Rigidbody2D:
   serializedVersion: 4

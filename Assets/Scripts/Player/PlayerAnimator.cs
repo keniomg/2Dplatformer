@@ -11,7 +11,7 @@ public class PlayerAnimator : ObjectAnimator
     {
         base.Start();
 
-        _vampireAbilitySprite.transform.localScale *= _playerVampire.VampirismRadius;
+        _vampireAbilitySprite.transform.localScale *= _playerVampire.Radius;
         _playerStatus = (PlayerStatus)Status;
     }
 
@@ -35,11 +35,11 @@ public class PlayerAnimator : ObjectAnimator
 
     private void AnimateVampireAbility()
     {
-        if (_playerVampire.IsAbilityActive && !_vampireAbilitySprite.gameObject.activeSelf)
+        if (_playerVampire.IsActive && !_vampireAbilitySprite.gameObject.activeSelf)
         {
             _vampireAbilitySprite.gameObject.SetActive(true);
         }
-        else if (!_playerVampire.IsAbilityActive)
+        else if (!_playerVampire.IsActive)
         {
             _vampireAbilitySprite.gameObject.SetActive(false);
         }

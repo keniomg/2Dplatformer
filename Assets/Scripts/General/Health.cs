@@ -5,37 +5,37 @@ public class Health : MonoBehaviour
 {
     [SerializeField] protected UIEventInvoker Eventer;
 
-    [SerializeField] private float _maximumHealthValue;
+    [SerializeField] private float _maximumValue;
 
-    public event Action<float> HealthValueChanged;
+    protected float MinimumValue;
 
-    protected float MinimumHealthValue;
+    public event Action<float> ValueChanged;
 
-    public float CurrentHealthValue { get; protected set; }
-    public float MaximumHealthValue => _maximumHealthValue;
+    public float CurrentValue { get; protected set; }
+    public float MaximumValue => _maximumValue;
 
     protected void Awake()
     {
-        MinimumHealthValue = 0;
-        CurrentHealthValue = _maximumHealthValue;
+        MinimumValue = 0;
+        CurrentValue = _maximumValue;
     }
 
     protected virtual void Start()
     {
-        Eventer.RegisterEvent(name, HealthValueChanged);
+        Eventer.RegisterEvent(name, ValueChanged);
     }
 
     private void OnDisable()
     {
-        Eventer.UnregisterEvent(name, HealthValueChanged);
+        Eventer.UnregisterEvent(name, ValueChanged);
     }
 
     public void Decrease(float decreaseValue)
     {
         if (decreaseValue >= 0)
         {
-            CurrentHealthValue = Mathf.Clamp(CurrentHealthValue - decreaseValue, MinimumHealthValue, _maximumHealthValue);
-            Eventer.InvokeEvent(name, CurrentHealthValue / MaximumHealthValue);
+            CurrentValue = Mathf.Clamp(CurrentValue - decreaseValue, MinimumValue, _maximumValue);
+            Eventer.InvokeEvent(name, CurrentValue / MaximumValue);
         }
     }
 
@@ -43,8 +43,8 @@ public class Health : MonoBehaviour
     {
         if (increaseValue >= 0)
         {
-            CurrentHealthValue = Mathf.Clamp(CurrentHealthValue + increaseValue, MinimumHealthValue, _maximumHealthValue);
-            Eventer.InvokeEvent(name, CurrentHealthValue / MaximumHealthValue);
+            CurrentValue = Mathf.Clamp(CurrentValue + increaseValue, MinimumValue, _maximumValue);
+            Eventer.InvokeEvent(name, CurrentValue / MaximumValue);
         }
     }
 }

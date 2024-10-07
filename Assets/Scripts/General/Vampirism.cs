@@ -7,33 +7,33 @@ public class Vampirism : MonoBehaviour
     [SerializeField] protected UIEventInvoker TimeLeftEventer;
     [SerializeField] protected UIEventInvoker CooldownEventer;
 
-    public event Action<float> AbilityDurationLeftChanged;
-    public event Action<float> AbilityCooldownChanged;
-    
     protected VampirismTargetSearcher TargetSearcher;
 
-    private int _vampirismPerSecond = 5;
-    private int _abilityDuration = 6;
-    private int _abilityCooldown = 3;
-    private bool _isAbilityAvailable;
+    private int _valuePerSecond = 5;
+    private int _duration = 6;
+    private int _cooldown = 3;
+    private bool _isAvailable;
     private Health _selfHealth;
-    private WaitForSeconds _vampirismDelay;
+    private WaitForSeconds _delay;
     private WaitForSeconds _cooldownDelay;
 
-    public int AbilityDurationLeft { get; private set; }
-    public int CurrentAbilityCooldown { get; private set; }
-    public bool IsAbilityActive { get; private set; }
-    public float VampirismRadius => TargetSearcher.TargetSearchRadius;
-    public int MaximumAbilityDuration => _abilityDuration;
-    public int MaximumAbilityCooldown => _abilityCooldown;
+    public event Action<float> DurationLeftChanged;
+    public event Action<float> CooldownChanged;
+
+    public int DurationLeft { get; private set; }
+    public int CurrentCooldown { get; private set; }
+    public bool IsActive { get; private set; }
+    public float Radius => TargetSearcher.TargetSearchRadius;
+    public int MaximumDuration => _duration;
+    public int MaximumCooldown => _cooldown;
 
     private void Start()
     {
-        TimeLeftEventer.RegisterEvent(name, AbilityDurationLeftChanged);
-        CooldownEventer.RegisterEvent(name, AbilityCooldownChanged);
-        _isAbilityAvailable = true;
+        TimeLeftEventer.RegisterEvent(name, DurationLeftChanged);
+        CooldownEventer.RegisterEvent(name, CooldownChanged);
+        _isAvailable = true;
         const int SecondDelay = 1;
-        _vampirismDelay = new WaitForSeconds(SecondDelay);
+        _delay = new WaitForSeconds(SecondDelay);
         _cooldownDelay = new WaitForSeconds(SecondDelay);
     }
 
@@ -45,52 +45,52 @@ public class Vampirism : MonoBehaviour
 
     public virtual void OnButtonPressed()
     {
-        if (_isAbilityAvailable)
+        if (_isAvailable)
         {
-            StartCoroutine(CastVampirism());
+            StartCoroutine(Cast());
         }
     }
 
-    private IEnumerator CastVampirism()
+    private IEnumerator Cast()
     {
-        IsAbilityActive = true;
-        _isAbilityAvailable = false;
-        AbilityDurationLeft = _abilityDuration;
+        IsActive = true;
+        _isAvailable = false;
+        DurationLeft = _duration;
 
-        while (AbilityDurationLeft > 0)
+        while (DurationLeft > 0)
         {
             if (TargetSearcher.NearestTarget != null)
             {
-                TargetSearcher.NearestTarget.Decrease(_vampirismPerSecond);
-                _selfHealth.Increase(_vampirismPerSecond);
+                TargetSearcher.NearestTarget.Decrease(_valuePerSecond);
+                _selfHealth.Increase(_valuePerSecond);
             }
 
-            yield return _vampirismDelay;
+            yield return _delay;
 
-            AbilityDurationLeft--;
-            InvokeAbilityEvent(TimeLeftEventer, AbilityDurationLeft, MaximumAbilityDuration);
+            DurationLeft--;
+            InvokeAbilityEvent(TimeLeftEventer, DurationLeft, MaximumDuration);
         }
 
-        IsAbilityActive = false;
+        IsActive = false;
         StartCoroutine(Cooldown());
     }
 
     private IEnumerator Cooldown()
     {
-        CurrentAbilityCooldown = 0;
-        InvokeAbilityEvent(CooldownEventer, CurrentAbilityCooldown, MaximumAbilityCooldown);
+        CurrentCooldown = 0;
+        InvokeAbilityEvent(CooldownEventer, CurrentCooldown, MaximumCooldown);
 
-        while (CurrentAbilityCooldown < _abilityCooldown)
+        while (CurrentCooldown < _cooldown)
         {
             yield return _cooldownDelay;
 
-            CurrentAbilityCooldown++;
-            InvokeAbilityEvent(CooldownEventer, CurrentAbilityCooldown, MaximumAbilityCooldown);
+            CurrentCooldown++;
+            InvokeAbilityEvent(CooldownEventer, CurrentCooldown, MaximumCooldown);
         }
 
-        AbilityDurationLeft = MaximumAbilityDuration;
-        InvokeAbilityEvent(TimeLeftEventer, AbilityDurationLeft, MaximumAbilityDuration);
-        _isAbilityAvailable = true;
+        DurationLeft = MaximumDuration;
+        InvokeAbilityEvent(TimeLeftEventer, DurationLeft, MaximumDuration);
+        _isAvailable = true;
     }
 
     private void InvokeAbilityEvent(UIEventInvoker eventer, int currentValue, int maximumValue)
